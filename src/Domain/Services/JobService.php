@@ -41,6 +41,11 @@ class JobService extends BaseService implements JobServiceInterface
         //$jobEntity->setDelay();
         ValidationHelper::validateEntity($jobEntity);
         $this->getRepository()->create($jobEntity);
+
+        if($_ENV['CRON_AUTORUN'] == 1) {
+            $this->runAll();
+        }
+
         return $jobEntity;
     }
 
@@ -90,7 +95,6 @@ class JobService extends BaseService implements JobServiceInterface
     {
         $jobClass = $jobEntity->getClass();
         /** @var JobInterface $jobInstance */
-
         $jobInstance = $container->get($jobClass);
         //$jobInstance = DiHelper::make($jobClass, $container);
         $data = $jobEntity->getJob();
