@@ -73,10 +73,13 @@ class JobService extends BaseService implements JobServiceInterface
         $jobInstance = $this->getJobInstance($jobEntity, $this->container);
         $jobEntity->incrementAttempt();
         $isSuccess = false;
+
+        $jobInstance->run();
+        $jobEntity->setCompleted();
+        $isSuccess = true;
+
         try {
-            $jobInstance->run();
-            $jobEntity->setCompleted();
-            $isSuccess = true;
+
         } catch (\Throwable $e) {
         }
         $this->getRepository()->update($jobEntity);
@@ -87,7 +90,9 @@ class JobService extends BaseService implements JobServiceInterface
     {
         $jobClass = $jobEntity->getClass();
         /** @var JobInterface $jobInstance */
-        $jobInstance = DiHelper::make($jobClass, $container);
+
+        $jobInstance = $container->get($jobClass);
+        //$jobInstance = DiHelper::make($jobClass, $container);
         $data = $jobEntity->getJob();
         EntityHelper::setAttributes($jobInstance, $data);
         return $jobInstance;

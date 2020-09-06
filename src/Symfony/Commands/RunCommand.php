@@ -40,12 +40,15 @@ class RunCommand extends Command
         $output->writeln('');
 
         $total = $this->jobService->runAll($channel);
+        //dd($total->getSuccess());
         if ($total->getSuccess()) {
             $output->writeln('<fg=green>Complete ' . $total->getSuccess() . ' jobs!</>');
         } else {
             $output->writeln('<fg=magenta>Jobs empty!</>');
         }
         $output->writeln('');
+
+        return 0;
     }
 
 }
