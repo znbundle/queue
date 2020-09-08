@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBundle\Queue\Domain\Entities;
+namespace ZnBundle\Queue\Domain\Entities;
 
 use Illuminate\Support\Collection;
 

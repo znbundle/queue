@@ -5,7 +5,7 @@
 Можно это сделать в коде так:
 
 ```php
-/** @var \PhpBundle\Queue\Domain\Interfaces\Services\JobServiceInterface $jobService */
+/** @var \ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface $jobService */
 
 $jobService->runAll('email');
 ```

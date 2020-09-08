@@ -1,19 +1,19 @@
 <?php
 
-namespace PhpBundle\Queue\Domain\Services;
+namespace ZnBundle\Queue\Domain\Services;
 
 use Illuminate\Support\Collection;
-use PhpBundle\Queue\Domain\Entities\JobEntity;
-use PhpBundle\Queue\Domain\Entities\TotalEntity;
-use PhpBundle\Queue\Domain\Enums\PriorityEnum;
-use PhpBundle\Queue\Domain\Interfaces\JobInterface;
-use PhpBundle\Queue\Domain\Interfaces\Repositories\JobRepositoryInterface;
-use PhpBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
-use PhpBundle\Queue\Domain\Queries\NewTaskQuery;
-use PhpLab\Core\Domain\Base\BaseService;
-use PhpLab\Core\Domain\Helpers\EntityHelper;
-use PhpLab\Core\Domain\Helpers\ValidationHelper;
-use PhpLab\Core\Helpers\DiHelper;
+use ZnBundle\Queue\Domain\Entities\JobEntity;
+use ZnBundle\Queue\Domain\Entities\TotalEntity;
+use ZnBundle\Queue\Domain\Enums\PriorityEnum;
+use ZnBundle\Queue\Domain\Interfaces\JobInterface;
+use ZnBundle\Queue\Domain\Interfaces\Repositories\JobRepositoryInterface;
+use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
+use ZnBundle\Queue\Domain\Queries\NewTaskQuery;
+use ZnCore\Base\Domain\Base\BaseService;
+use ZnCore\Base\Domain\Helpers\EntityHelper;
+use ZnCore\Base\Domain\Helpers\ValidationHelper;
+use ZnCore\Base\Helpers\DiHelper;
 use Psr\Container\ContainerInterface;
 
 /**

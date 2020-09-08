@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBundle\Queue\Domain\Enums;
+namespace ZnBundle\Queue\Domain\Enums;
 
 class PriorityEnum
 {

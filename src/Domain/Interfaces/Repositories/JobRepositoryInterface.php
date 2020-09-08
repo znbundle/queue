@@ -1,11 +1,11 @@
 <?php
 
-namespace PhpBundle\Queue\Domain\Interfaces\Repositories;
+namespace ZnBundle\Queue\Domain\Interfaces\Repositories;
 
 use Illuminate\Support\Collection;
-use PhpBundle\Queue\Domain\Entities\JobEntity;
-use PhpLab\Core\Domain\Interfaces\Repository\CrudRepositoryInterface;
-use PhpLab\Core\Domain\Libs\Query;
+use ZnBundle\Queue\Domain\Entities\JobEntity;
+use ZnCore\Base\Domain\Interfaces\Repository\CrudRepositoryInterface;
+use ZnCore\Base\Domain\Libs\Query;
 
 interface JobRepositoryInterface extends CrudRepositoryInterface
 {

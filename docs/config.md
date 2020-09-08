@@ -14,6 +14,6 @@ migrate:
 
 ```yaml
 services:
-    PhpBundle\Queue\Symfony\Commands\RunCommand:
+    ZnBundle\Queue\Symfony\Commands\RunCommand:
         tags: ['controller.service_arguments']
 ```

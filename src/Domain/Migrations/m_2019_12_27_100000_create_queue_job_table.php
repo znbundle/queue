@@ -3,9 +3,9 @@
 namespace Migrations;
 
 use Illuminate\Database\Schema\Blueprint;
-use PhpLab\Core\Enums\StatusEnum;
-use PhpLab\Eloquent\Migration\Base\BaseCreateTableMigration;
-use PhpBundle\Queue\Domain\Enums\PriorityEnum;
+use ZnCore\Base\Enums\StatusEnum;
+use ZnCore\Db\Migration\Base\BaseCreateTableMigration;
+use ZnBundle\Queue\Domain\Enums\PriorityEnum;
 
 class m_2019_12_27_100000_create_queue_job_table extends BaseCreateTableMigration
 {

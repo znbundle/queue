@@ -1,12 +1,12 @@
 <?php
 
-namespace PhpBundle\Queue\Domain\Repositories\Eloquent;
+namespace ZnBundle\Queue\Domain\Repositories\Eloquent;
 
 use Illuminate\Support\Collection;
-use PhpBundle\Queue\Domain\Entities\JobEntity;
-use PhpBundle\Queue\Domain\Interfaces\Repositories\JobRepositoryInterface;
-use PhpBundle\Queue\Domain\Queries\NewTaskQuery;
-use PhpLab\Eloquent\Db\Base\BaseEloquentCrudRepository;
+use ZnBundle\Queue\Domain\Entities\JobEntity;
+use ZnBundle\Queue\Domain\Interfaces\Repositories\JobRepositoryInterface;
+use ZnBundle\Queue\Domain\Queries\NewTaskQuery;
+use ZnCore\Db\Db\Base\BaseEloquentCrudRepository;
 
 class JobRepository extends BaseEloquentCrudRepository implements JobRepositoryInterface
 {

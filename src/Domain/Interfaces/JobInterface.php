@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBundle\Queue\Domain\Interfaces;
+namespace ZnBundle\Queue\Domain\Interfaces;
 
 interface JobInterface
 {

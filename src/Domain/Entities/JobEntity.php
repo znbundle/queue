@@ -1,14 +1,14 @@
 <?php
 
-namespace PhpBundle\Queue\Domain\Entities;
+namespace ZnBundle\Queue\Domain\Entities;
 
 use DateTime;
-use PhpBundle\Queue\Domain\Enums\PriorityEnum;
-use PhpBundle\Queue\Domain\Helpers\JobHelper;
-use PhpBundle\Queue\Domain\Interfaces\JobInterface;
-use PhpLab\Core\Domain\Interfaces\Entity\EntityIdInterface;
-use PhpLab\Core\Domain\Interfaces\Entity\ValidateEntityInterface;
-use PhpLab\Core\Enums\StatusEnum;
+use ZnBundle\Queue\Domain\Enums\PriorityEnum;
+use ZnBundle\Queue\Domain\Helpers\JobHelper;
+use ZnBundle\Queue\Domain\Interfaces\JobInterface;
+use ZnCore\Base\Domain\Interfaces\Entity\EntityIdInterface;
+use ZnCore\Base\Domain\Interfaces\Entity\ValidateEntityInterface;
+use ZnCore\Base\Enums\StatusEnum;
 
 class JobEntity implements ValidateEntityInterface, EntityIdInterface
 {

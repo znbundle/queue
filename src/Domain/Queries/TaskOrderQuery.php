@@ -1,8 +1,8 @@
 <?php
 
-namespace PhpBundle\Queue\Domain\Queries;
+namespace ZnBundle\Queue\Domain\Queries;
 
-use PhpLab\Core\Domain\Libs\Query;
+use ZnCore\Base\Domain\Libs\Query;
 
 class TaskOrderQuery extends Query
 {

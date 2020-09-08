@@ -1,9 +1,9 @@
 <?php
 
-namespace PhpBundle\Queue\Domain\Queries;
+namespace ZnBundle\Queue\Domain\Queries;
 
-use PhpLab\Core\Domain\Entities\Query\Where;
-use PhpLab\Core\Enums\StatusEnum;
+use ZnCore\Base\Domain\Entities\Query\Where;
+use ZnCore\Base\Enums\StatusEnum;
 
 class NewTaskQuery extends TaskOrderQuery
 {

@@ -1,17 +1,17 @@
 <?php
 
-namespace PhpBundle\Queue\Tests\Unit;
+namespace ZnBundle\Queue\Tests\Unit;
 
 use Illuminate\Container\Container;
 use Illuminate\Database\Capsule\Manager;
-use PhpBundle\Queue\Domain\Enums\PriorityEnum;
-use PhpBundle\Queue\Domain\Interfaces\Repositories\JobRepositoryInterface;
-use PhpBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
-use PhpBundle\Queue\Domain\Repositories\Eloquent\JobRepository;
-use PhpBundle\Queue\Domain\Services\JobService;
-use PhpBundle\Queue\Tests\Libs\Jobs\ExampleJob;
-use PhpLab\Core\Domain\Helpers\EntityHelper;
-use PhpLab\Test\Base\BaseTest;
+use ZnBundle\Queue\Domain\Enums\PriorityEnum;
+use ZnBundle\Queue\Domain\Interfaces\Repositories\JobRepositoryInterface;
+use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
+use ZnBundle\Queue\Domain\Repositories\Eloquent\JobRepository;
+use ZnBundle\Queue\Domain\Services\JobService;
+use ZnBundle\Queue\Tests\Libs\Jobs\ExampleJob;
+use ZnCore\Base\Domain\Helpers\EntityHelper;
+use ZnTool\Test\Base\BaseTest;
 use Psr\Container\ContainerInterface;
 
 final class ExampleTest extends BaseTest
@@ -26,7 +26,7 @@ final class ExampleTest extends BaseTest
     private function makeContainer(): ContainerInterface
     {
         $container = Container::getInstance();
-        $container->bind(Manager::class, \PhpLab\Eloquent\Db\Helpers\Manager::class, true);
+        $container->bind(Manager::class, \ZnCore\Db\Db\Helpers\Manager::class, true);
         $container->bind(JobRepositoryInterface::class, JobRepository::class, true);
         $container->bind(JobServiceInterface::class, JobService::class, true);
         $container->bind(ContainerInterface::class, Container::class, true);

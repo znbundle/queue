@@ -1,8 +1,8 @@
 <?php
 
-namespace PhpBundle\Queue\Symfony\Commands;
+namespace ZnBundle\Queue\Symfony\Commands;
 
-use PhpBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
+use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
