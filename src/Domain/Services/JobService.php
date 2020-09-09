@@ -10,9 +10,9 @@ use ZnBundle\Queue\Domain\Interfaces\JobInterface;
 use ZnBundle\Queue\Domain\Interfaces\Repositories\JobRepositoryInterface;
 use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
 use ZnBundle\Queue\Domain\Queries\NewTaskQuery;
-use ZnCore\Base\Domain\Base\BaseService;
-use ZnCore\Base\Domain\Helpers\EntityHelper;
-use ZnCore\Base\Domain\Helpers\ValidationHelper;
+use ZnCore\Domain\Base\BaseService;
+use ZnCore\Domain\Helpers\EntityHelper;
+use ZnCore\Domain\Helpers\ValidationHelper;
 use ZnCore\Base\Helpers\DiHelper;
 use Psr\Container\ContainerInterface;
 

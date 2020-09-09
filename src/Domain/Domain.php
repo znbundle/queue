@@ -2,7 +2,7 @@
 
 namespace ZnBundle\Queue\Domain;
 
-use ZnCore\Base\Domain\Interfaces\DomainInterface;
+use ZnCore\Domain\Interfaces\DomainInterface;
 
 class Domain implements DomainInterface
 {

@@ -6,8 +6,8 @@ use DateTime;
 use ZnBundle\Queue\Domain\Enums\PriorityEnum;
 use ZnBundle\Queue\Domain\Helpers\JobHelper;
 use ZnBundle\Queue\Domain\Interfaces\JobInterface;
-use ZnCore\Base\Domain\Interfaces\Entity\EntityIdInterface;
-use ZnCore\Base\Domain\Interfaces\Entity\ValidateEntityInterface;
+use ZnCore\Domain\Interfaces\Entity\EntityIdInterface;
+use ZnCore\Domain\Interfaces\Entity\ValidateEntityInterface;
 use ZnCore\Base\Enums\StatusEnum;
 
 class JobEntity implements ValidateEntityInterface, EntityIdInterface
