@@ -16,7 +16,7 @@ class ExampleJob implements JobInterface, ContainerAwareInterface
 
     public function run()
     {
-        if($this->messageText == 'qwerty') {
+        if ($this->messageText == 'qwerty') {
             throw new AlreadyExistsException($this->messageText);
         }
     }

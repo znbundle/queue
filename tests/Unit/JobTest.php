@@ -14,7 +14,7 @@ use ZnCore\Domain\Helpers\EntityHelper;
 use ZnTool\Test\Base\BaseTest;
 use Psr\Container\ContainerInterface;
 
-final class ExampleTest extends BaseTest
+final class JobTest extends BaseTest
 {
 
     const CHANNEL_EMAIL = 'email';
