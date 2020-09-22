@@ -23,5 +23,5 @@ $container->bind(\Psr\Container\ContainerInterface::class, function () {
 }, true);
 
 CommandHelper::registerFromNamespaceList([
-    'ZnBundle\Queue\Symfony\Commands',
+    'ZnBundle\Queue\Symfony4\Commands',
 ], $container);

@@ -1,6 +1,6 @@
 <?php
 
-namespace ZnBundle\Queue\Symfony\Commands;
+namespace ZnBundle\Queue\Symfony4\Commands;
 
 use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
 use Symfony\Component\Console\Command\Command;
