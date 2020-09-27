@@ -26,7 +26,7 @@ final class JobTest extends BaseTest
     private function makeContainer(): ContainerInterface
     {
         $container = Container::getInstance();
-        $container->bind(Manager::class, \ZnCore\Db\Db\Helpers\Manager::class, true);
+        $container->bind(Manager::class, \ZnCore\Db\Db\Capsule\Manager::class, true);
         $container->bind(JobRepositoryInterface::class, JobRepository::class, true);
         $container->bind(JobServiceInterface::class, JobService::class, true);
         $container->bind(ContainerInterface::class, Container::class, true);
