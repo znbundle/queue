@@ -10,10 +10,6 @@ use ZnLib\Console\Symfony4\Helpers\CommandHelper;
  * @var Container $container
  */
 
-//$container = Container::getInstance();
-
-//$container->bind(Application::class, Application::class, true);
-
 $container->bind(\ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface::class, \ZnBundle\Queue\Domain\Services\JobService::class);
 $container->bind(\ZnBundle\Notify\Domain\Interfaces\Repositories\EmailRepositoryInterface::class, \ZnBundle\Notify\Domain\Repositories\Dev\EmailRepository::class);
 $container->bind(\ZnBundle\Notify\Domain\Interfaces\Repositories\SmsRepositoryInterface::class, \ZnBundle\Notify\Domain\Repositories\Dev\SmsRepository::class);
