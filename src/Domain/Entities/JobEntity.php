@@ -21,7 +21,7 @@ class JobEntity implements ValidateEntityInterface, EntityIdInterface
     private $priority = PriorityEnum::NORMAL;
     private $delay = 0;
     private $attempt = 0;
-    private $status = StatusEnum::ENABLE;
+    private $status = StatusEnum::ENABLED;
     private $pushedAt;
     private $reservedAt;
     private $doneAt;
