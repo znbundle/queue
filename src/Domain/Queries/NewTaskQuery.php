@@ -19,7 +19,7 @@ class NewTaskQuery extends TaskOrderQuery
 
     private function addStatusFilter()
     {
-        $whereEnabled = new Where('status', StatusEnum::ENABLE);
+        $whereEnabled = new Where('status', StatusEnum::ENABLED);
         $this->whereNew($whereEnabled);
     }
 
