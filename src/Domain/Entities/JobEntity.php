@@ -3,14 +3,15 @@
 namespace ZnBundle\Queue\Domain\Entities;
 
 use DateTime;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 use ZnBundle\Queue\Domain\Enums\PriorityEnum;
 use ZnBundle\Queue\Domain\Helpers\JobHelper;
 use ZnBundle\Queue\Domain\Interfaces\JobInterface;
 use ZnCore\Domain\Interfaces\Entity\EntityIdInterface;
-use ZnCore\Domain\Interfaces\Entity\ValidateEntityInterface;
+use ZnCore\Domain\Interfaces\Entity\ValidateEntityByMetadataInterface;
 use ZnCore\Base\Enums\StatusEnum;
 
-class JobEntity implements ValidateEntityInterface, EntityIdInterface
+class JobEntity implements ValidateEntityByMetadataInterface, EntityIdInterface
 {
 
     private $id;
@@ -31,9 +32,9 @@ class JobEntity implements ValidateEntityInterface, EntityIdInterface
         $this->pushedAt = new DateTime;
     }
 
-    public function validationRules(): array
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
-        return [];
+
     }
 
     public function getId()
