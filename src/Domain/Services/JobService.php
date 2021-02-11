@@ -27,7 +27,7 @@ class JobService extends BaseService implements JobServiceInterface
 
     public function __construct(JobRepositoryInterface $repository, ContainerInterface $container)
     {
-        $this->repository = $repository;
+        $this->setRepository($repository);
         $this->container = $container;
     }
 
