@@ -11,8 +11,8 @@ use ZnLib\Console\Symfony4\Helpers\CommandHelper;
  */
 
 $container->bind(\ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface::class, \ZnBundle\Queue\Domain\Services\JobService::class);
-$container->bind(\ZnBundle\Notify\Domain\Interfaces\Repositories\EmailRepositoryInterface::class, \ZnBundle\Notify\Domain\Repositories\Dev\EmailRepository::class);
-$container->bind(\ZnBundle\Notify\Domain\Interfaces\Repositories\SmsRepositoryInterface::class, \ZnBundle\Notify\Domain\Repositories\Dev\SmsRepository::class);
+//$container->bind(\ZnBundle\Notify\Domain\Interfaces\Repositories\EmailRepositoryInterface::class, \ZnBundle\Notify\Domain\Repositories\Dev\EmailRepository::class);
+//$container->bind(\ZnBundle\Notify\Domain\Interfaces\Repositories\SmsRepositoryInterface::class, \ZnBundle\Notify\Domain\Repositories\Dev\SmsRepository::class);
 $container->bind(\ZnBundle\Queue\Domain\Interfaces\Repositories\JobRepositoryInterface::class, \ZnBundle\Queue\Domain\Repositories\Eloquent\JobRepository::class);
 $container->bind(\Psr\Container\ContainerInterface::class, function () {
     return Container::getInstance();
