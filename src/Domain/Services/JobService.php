@@ -15,6 +15,7 @@ use ZnCore\Domain\Helpers\EntityHelper;
 use ZnCore\Domain\Helpers\ValidationHelper;
 use ZnCore\Base\Helpers\DiHelper;
 use Psr\Container\ContainerInterface;
+use ZnCore\Domain\Interfaces\Libs\EntityManagerInterface;
 
 /**
  * @method JobEntity createEntity(array $attributes = [])
@@ -25,10 +26,11 @@ class JobService extends BaseService implements JobServiceInterface
 
     protected $container;
 
-    public function __construct(JobRepositoryInterface $repository, ContainerInterface $container)
+    public function __construct(JobRepositoryInterface $repository, ContainerInterface $container, EntityManagerInterface $entityManager)
     {
         $this->setRepository($repository);
         $this->container = $container;
+        $this->setEntityManager($entityManager);
     }
 
     public function push(JobInterface $job, int $priority = PriorityEnum::NORMAL, string $channel = null)
