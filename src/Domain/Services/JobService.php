@@ -10,6 +10,7 @@ use ZnBundle\Queue\Domain\Interfaces\JobInterface;
 use ZnBundle\Queue\Domain\Interfaces\Repositories\JobRepositoryInterface;
 use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
 use ZnBundle\Queue\Domain\Queries\NewTaskQuery;
+use ZnCore\Base\Libs\DotEnv\DotEnv;
 use ZnCore\Domain\Base\BaseService;
 use ZnCore\Domain\Helpers\EntityHelper;
 use ZnCore\Domain\Helpers\ValidationHelper;
@@ -44,7 +45,7 @@ class JobService extends BaseService implements JobServiceInterface
         ValidationHelper::validateEntity($jobEntity);
         $this->getRepository()->create($jobEntity);
 
-        if($_ENV['CRON_AUTORUN'] == 1) {
+        if(DotEnv::get('CRON_AUTORUN') == 1) {
             $this->runAll();
         }
 
