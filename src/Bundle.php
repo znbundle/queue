@@ -14,6 +14,13 @@ class Bundle extends BaseBundle
         ];
     }
 
+    public function console(): array
+    {
+        return [
+            'ZnBundle\Queue\Symfony4\Commands',
+        ];
+    }
+
     public function migration(): array
     {
         return [
