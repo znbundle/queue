@@ -43,9 +43,16 @@ class JobService extends BaseService implements JobServiceInterface
         $jobEntity->setPriority($priority);
         //$jobEntity->setDelay();
         ValidationHelper::validateEntity($jobEntity);
+
+        if(DotEnv::get('CRON_DIRECT_RUN', false) == 1) {
+            $jobInstance = $this->getJobInstance($jobEntity, $this->container);
+            $jobInstance->run();
+            return $jobEntity;
+        }
+
         $this->getRepository()->create($jobEntity);
 
-        if(DotEnv::get('CRON_AUTORUN') == 1) {
+        if(DotEnv::get('CRON_AUTORUN', false) == 1) {
             $this->runAll();
         }
 
@@ -89,6 +96,7 @@ class JobService extends BaseService implements JobServiceInterface
         try {
 
         } catch (\Throwable $e) {
+
         }
         $this->getRepository()->update($jobEntity);
         return $isSuccess;
