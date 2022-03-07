@@ -29,13 +29,13 @@ final class JobTest extends BaseTest
         $container = Container::getInstance();
 
         $containerConfigurator = ContainerHelper::getContainerConfiguratorByContainer($container);
-        $containerConfigurator->bind(Manager::class, \ZnLib\Db\Capsule\Manager::class, true);
+        $containerConfigurator->bind(Manager::class, \ZnDatabase\Eloquent\Domain\Capsule\Manager::class, true);
         $containerConfigurator->bind(JobRepositoryInterface::class, JobRepository::class, true);
         $containerConfigurator->bind(JobServiceInterface::class, JobService::class, true);
         $containerConfigurator->bind(ContainerInterface::class, Container::class, true);
 
 
-        /*$container->bind(Manager::class, \ZnLib\Db\Capsule\Manager::class, true);
+        /*$container->bind(Manager::class, \ZnDatabase\Eloquent\Domain\Capsule\Manager::class, true);
         $container->bind(JobRepositoryInterface::class, JobRepository::class, true);
         $container->bind(JobServiceInterface::class, JobService::class, true);
         $container->bind(ContainerInterface::class, Container::class, true);*/

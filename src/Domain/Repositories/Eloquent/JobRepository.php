@@ -6,7 +6,7 @@ use Illuminate\Support\Collection;
 use ZnBundle\Queue\Domain\Entities\JobEntity;
 use ZnBundle\Queue\Domain\Interfaces\Repositories\JobRepositoryInterface;
 use ZnBundle\Queue\Domain\Queries\NewTaskQuery;
-use ZnLib\Db\Base\BaseEloquentCrudRepository;
+use ZnDatabase\Eloquent\Domain\Base\BaseEloquentCrudRepository;
 
 class JobRepository extends BaseEloquentCrudRepository implements JobRepositoryInterface
 {
