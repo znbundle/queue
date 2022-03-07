@@ -4,7 +4,7 @@ namespace Migrations;
 
 use Illuminate\Database\Schema\Blueprint;
 use ZnCore\Base\Enums\StatusEnum;
-use ZnLib\Migration\Domain\Base\BaseCreateTableMigration;
+use ZnDatabase\Migration\Domain\Base\BaseCreateTableMigration;
 use ZnBundle\Queue\Domain\Enums\PriorityEnum;
 
 class m_2019_12_27_100000_create_queue_job_table extends BaseCreateTableMigration
