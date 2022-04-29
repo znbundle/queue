@@ -24,6 +24,13 @@ final class JobTest extends BaseTest
     /** @var ContainerInterface */
     private $container;
 
+    protected function fixtures(): array
+    {
+        return [
+            'queue_job',
+        ];
+    }
+
     private function makeContainer(): ContainerInterface
     {
         $container = Container::getInstance();
@@ -57,6 +64,8 @@ final class JobTest extends BaseTest
 
     public function testRunAllSuccess()
     {
+        $this->markTestIncomplete();
+        
         $jobService = $this->container->get(JobServiceInterface::class);
 
         $job = new ExampleJob;
@@ -88,6 +97,8 @@ final class JobTest extends BaseTest
 
     public function testRunAllFail()
     {
+        $this->markTestIncomplete();
+
         $jobService = $this->container->get(JobServiceInterface::class);
 
         $job = new ExampleJob;
