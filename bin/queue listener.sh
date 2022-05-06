@@ -1,3 +1,3 @@
 #!/bin/sh
-
-php console queue:listener
+cd ../../../bin
+php zn queue:listener

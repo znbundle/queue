@@ -1,3 +1,3 @@
 #!/bin/sh
-
-php console queue:run
+cd ../../../bin
+php zn queue:run
