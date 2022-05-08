@@ -10,7 +10,7 @@ use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
 use ZnBundle\Queue\Domain\Repositories\Eloquent\JobRepository;
 use ZnBundle\Queue\Domain\Services\JobService;
 use ZnBundle\Queue\Tests\Libs\Jobs\ExampleJob;
-use ZnCore\Base\Libs\App\Helpers\ContainerHelper;
+use ZnCore\Base\Libs\Container\Helpers\ContainerHelper;
 use ZnCore\Domain\Helpers\EntityHelper;
 use ZnTool\Test\Base\BaseTest;
 use Psr\Container\ContainerInterface;
