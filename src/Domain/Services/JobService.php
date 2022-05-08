@@ -3,6 +3,7 @@
 namespace ZnBundle\Queue\Domain\Services;
 
 use Illuminate\Support\Collection;
+use Psr\Container\ContainerInterface;
 use ZnBundle\Queue\Domain\Entities\JobEntity;
 use ZnBundle\Queue\Domain\Entities\TotalEntity;
 use ZnBundle\Queue\Domain\Enums\PriorityEnum;
@@ -14,8 +15,6 @@ use ZnCore\Base\Libs\DotEnv\DotEnv;
 use ZnCore\Domain\Base\BaseService;
 use ZnCore\Domain\Helpers\EntityHelper;
 use ZnCore\Domain\Helpers\ValidationHelper;
-use ZnCore\Base\Helpers\DiHelper;
-use Psr\Container\ContainerInterface;
 use ZnCore\Domain\Interfaces\Libs\EntityManagerInterface;
 
 /**
@@ -44,7 +43,7 @@ class JobService extends BaseService implements JobServiceInterface
         //$jobEntity->setDelay();
         ValidationHelper::validateEntity($jobEntity);
 
-        if(DotEnv::get('CRON_DIRECT_RUN', false) == 1) {
+        if (DotEnv::get('CRON_DIRECT_RUN', false) == 1) {
             $jobInstance = $this->getJobInstance($jobEntity, $this->container);
             $jobInstance->run();
             return $jobEntity;
@@ -52,7 +51,7 @@ class JobService extends BaseService implements JobServiceInterface
 
         $this->getRepository()->create($jobEntity);
 
-        if(DotEnv::get('CRON_AUTORUN', false) == 1) {
+        if (DotEnv::get('CRON_AUTORUN', false) == 1) {
             $this->runAll();
         }
 
