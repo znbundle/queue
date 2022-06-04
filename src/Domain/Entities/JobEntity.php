@@ -8,10 +8,11 @@ use ZnBundle\Queue\Domain\Enums\PriorityEnum;
 use ZnBundle\Queue\Domain\Helpers\JobHelper;
 use ZnBundle\Queue\Domain\Interfaces\JobInterface;
 use ZnCore\Contract\Domain\Interfaces\Entities\EntityIdInterface;
+use ZnCore\Domain\Interfaces\Entity\UniqueInterface;
 use ZnCore\Domain\Interfaces\Entity\ValidateEntityByMetadataInterface;
 use ZnCore\Base\Enums\StatusEnum;
 
-class JobEntity implements ValidateEntityByMetadataInterface, EntityIdInterface
+class JobEntity implements ValidateEntityByMetadataInterface, EntityIdInterface, UniqueInterface
 {
 
     private $id;
@@ -35,6 +36,11 @@ class JobEntity implements ValidateEntityByMetadataInterface, EntityIdInterface
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
 
+    }
+
+    public function unique(): array
+    {
+        return [];
     }
 
     public function getId()
@@ -69,6 +75,9 @@ class JobEntity implements ValidateEntityByMetadataInterface, EntityIdInterface
 
     public function getJob(): array
     {
+        if( ! $this->getData()) {
+            return [];
+        }
         return JobHelper::decode($this->getData());
     }
 
