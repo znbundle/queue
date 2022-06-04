@@ -10,6 +10,7 @@ use ZnBundle\Queue\Domain\Enums\PriorityEnum;
 use ZnBundle\Queue\Domain\Interfaces\JobInterface;
 use ZnBundle\Queue\Domain\Interfaces\Repositories\JobRepositoryInterface;
 use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
+use ZnBundle\Queue\Domain\Interfaces\Services\ScheduleServiceInterface;
 use ZnBundle\Queue\Domain\Queries\NewTaskQuery;
 use ZnCore\Base\Libs\DotEnv\DotEnv;
 use ZnCore\Domain\Base\BaseService;
@@ -25,12 +26,19 @@ class JobService extends BaseService implements JobServiceInterface
 {
 
     protected $container;
+    protected $scheduleService;
 
-    public function __construct(JobRepositoryInterface $repository, ContainerInterface $container, EntityManagerInterface $entityManager)
+    public function __construct(
+        JobRepositoryInterface $repository,
+        ScheduleServiceInterface $scheduleService,
+        ContainerInterface $container,
+        EntityManagerInterface $entityManager
+    )
     {
         $this->setRepository($repository);
         $this->container = $container;
         $this->setEntityManager($entityManager);
+        $this->scheduleService = $scheduleService;
     }
 
     public function push(JobInterface $job, int $priority = PriorityEnum::NORMAL, string $channel = null)
@@ -67,6 +75,11 @@ class JobService extends BaseService implements JobServiceInterface
 
     public function runAll(string $channel = null): TotalEntity
     {
+        $scheduleJobCollection = $this->scheduleService->runAll($channel);
+        $this->persistCollection($scheduleJobCollection);
+
+//        dd($scheduleJobCollection);
+
         $query = new NewTaskQuery($channel);
         /** @var Collection | JobEntity[] $jobCollection */
         $jobCollection = $this->getRepository()->all($query);
@@ -80,6 +93,19 @@ class JobService extends BaseService implements JobServiceInterface
             }
         }
         return $totalEntity;
+    }
+
+    /**
+     * @param Collection | JobEntity[] $collection
+     */
+    private function persistCollection(Collection $collection): void
+    {
+        if ($collection->isEmpty()) {
+            return;
+        }
+        foreach ($collection as $jobEntity) {
+            $this->getEntityManager()->persist($jobEntity);
+        }
     }
 
     private function runJob(JobEntity $jobEntity)
