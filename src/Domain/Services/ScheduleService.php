@@ -49,6 +49,7 @@ class ScheduleService extends BaseCrudService implements ScheduleServiceInterfac
         if(!$collection->isEmpty()) {
             foreach ($collection as $scheduleEntity) {
                 // todo: use - https://packagist.org/packages/dragonmantank/cron-expression
+                // https://crontab.guru/
 
                 $jobEntity = new JobEntity();
                 $jobEntity->setChannel($scheduleEntity->getChannel());
