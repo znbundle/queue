@@ -3,6 +3,7 @@
 namespace ZnBundle\Queue\Symfony4\Widgets;
 
 use Symfony\Component\Console\Output\OutputInterface;
+use ZnBundle\Queue\Domain\Entities\TotalEntity;
 
 class TotalQueueWidget
 {
@@ -14,21 +15,21 @@ class TotalQueueWidget
         $this->output = $output;
     }
 
-    public function run(): void
+    public function run(TotalEntity $totalEntity): void
     {
         $output = $this->output;
-        $isEmpty = $total->getSuccess() + $total->getFail() == 0;
+        $isEmpty = $totalEntity->getAll() == 0;
         if ($isEmpty) {
             $output->writeln('<fg=magenta>Jobs empty!</>');
             return;
         }
         $now = (new \DateTime())->format('Y-m-d H:i:s');
-        if ($total->getSuccess()) {
-            $message = '<fg=green>Complete ' . $total->getSuccess() . ' jobs!</> - ' . $now;
+        if ($totalEntity->getSuccess()) {
+            $message = '<fg=green>Complete ' . $totalEntity->getSuccess() . ' jobs!</> - ' . $now;
             $output->writeln($message);
         }
-        if ($total->getFail()) {
-            $message = '<fg=red>Error ' . $total->getFail() . ' jobs!</> - ' . $now;
+        if ($totalEntity->getFail()) {
+            $message = '<fg=red>Error ' . $totalEntity->getFail() . ' jobs!</> - ' . $now;
             $output->writeln($message);
         }
     }
