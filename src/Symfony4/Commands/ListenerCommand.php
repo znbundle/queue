@@ -11,6 +11,7 @@ use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
 use ZnBundle\Queue\Symfony4\Widgets\TotalQueueWidget;
 use ZnCore\Base\Enums\Measure\TimeEnum;
 use ZnCore\Base\Libs\FileSystem\Helpers\FilePathHelper;
+use ZnCore\Base\Libs\Shell\ShellCommand;
 
 class ListenerCommand extends Command
 {
@@ -40,7 +41,7 @@ class ListenerCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('<fg=white># Queue run</>');
+        $output->writeln('<fg=white># Queue listener</>');
         $output->writeln('');
 
         $channel = $input->getArgument('channel');
@@ -70,6 +71,19 @@ class ListenerCommand extends Command
         }
     }
 
+    /**
+     * Выполение очереди задач в текущем потоке
+     *
+     * Преимущества:
+     * - отъедает чуть меньше ресурсов, так как консольное приложение уже загружено
+     *
+     * Недостатки:
+     * - при деплое необходимо перезапускать демон
+     * - система менее устойчива к ошибкам, если что-то поломалось в задаче, то демон может умереть
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
     protected function runNormal(InputInterface $input, OutputInterface $output): void {
         $channel = $input->getArgument('channel');
         $totalEntity = $this->jobService->runAll($channel);
@@ -79,19 +93,44 @@ class ListenerCommand extends Command
         }
     }
 
+    /**
+     * Выполнение очереди задач как вызов консольной команды
+     *
+     * Преимущества:
+     * - при деплое нет необходимости перезапускать демон
+     * - система более устойчива к ошибкам, если что-то поломалось в задаче, то демон продолжает работать
+     *
+     * Недостатки:
+     * - отъедает чуть больше ресурсов, так как каждый раз вызывается консольное приложение
+     *
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @throws \ZnCore\Base\Libs\Shell\ShellException
+     */
     protected function runWrapped(InputInterface $input, OutputInterface $output): void {
         $channel = $input->getArgument('channel');
-        $path = FilePathHelper::rootPath() . '/vendor/zncore/base/bin';
+        $runCommand = [
+            "php zn queue:run",
+            $channel,
+            [
+                "--wrapped"=>true
+            ],
+        ];
+//        $runCommand = "php zn queue:run {$channel} --wrapped=1";
 
-        $cmd = new \ZnLib\Console\Symfony4\Libs\Command();
-        $cmd->add("cd {$path}");
-        $cmd->add("php zn queue:run {$channel} --wrapped=1");
-        $command = $cmd->toString();
-
-        $commandOutput = shell_exec($command);
-        $commandOutput = trim($commandOutput);
+        $commandOutput = $this->runConsoleCommand($runCommand);
         if ($commandOutput) {
             $output->writeln($commandOutput);
         }
+    }
+
+    protected function runConsoleCommand($runCommand): ?string {
+        $path = FilePathHelper::rootPath() . '/vendor/zncore/base/bin';
+        $shellCommand = new ShellCommand();
+        $shellCommand->setPath($path);
+        $shellResultEntity = $shellCommand->run($runCommand);
+        $commandOutput = $shellResultEntity->getOutputString();
+        return $commandOutput;
     }
 }
