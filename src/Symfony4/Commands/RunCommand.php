@@ -42,7 +42,12 @@ class RunCommand extends Command
         $total = $this->jobService->runAll($channel);
         //dd($total->getSuccess());
         if ($total->getSuccess()) {
-            $output->writeln('<fg=green>Complete ' . $total->getSuccess() . ' jobs!</>');
+
+            $message = '<fg=green>Complete ' . $total->getSuccess() . ' jobs!</>';
+            $message .= ' ' . (new \DateTime())->format('Y-m-d H:i:s');
+            $output->writeln($message);
+
+//            $output->writeln('<fg=green>Complete ' . $total->getSuccess() . ' jobs!</>');
         } else {
             $output->writeln('<fg=magenta>Jobs empty!</>');
         }
@@ -50,5 +55,4 @@ class RunCommand extends Command
 
         return 0;
     }
-
 }

@@ -19,6 +19,7 @@ class m_2022_06_04_085421_create_schedule_table extends BaseCreateTableMigration
         $table->string('class')->comment('Имя класса');
         $table->text('data')->nullable()->comment('Данные для задачи');
         $table->smallInteger('status_id')->comment('Статус');
+        $table->dateTime('executed_at')->nullable()->comment('Время последнего выполнения');
         $table->dateTime('created_at')->comment('Время создания');
         $table->dateTime('updated_at')->nullable()->comment('Время обновления');
     }

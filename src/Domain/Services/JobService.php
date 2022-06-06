@@ -4,6 +4,7 @@ namespace ZnBundle\Queue\Domain\Services;
 
 use Illuminate\Support\Collection;
 use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
 use ZnBundle\Queue\Domain\Entities\JobEntity;
 use ZnBundle\Queue\Domain\Entities\TotalEntity;
 use ZnBundle\Queue\Domain\Enums\PriorityEnum;
@@ -27,18 +28,21 @@ class JobService extends BaseService implements JobServiceInterface
 
     protected $container;
     protected $scheduleService;
+    protected $logger;
 
     public function __construct(
         JobRepositoryInterface $repository,
         ScheduleServiceInterface $scheduleService,
         ContainerInterface $container,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        LoggerInterface $logger
     )
     {
         $this->setRepository($repository);
         $this->container = $container;
         $this->setEntityManager($entityManager);
         $this->scheduleService = $scheduleService;
+        $this->logger = $logger;
     }
 
     public function push(JobInterface $job, int $priority = PriorityEnum::NORMAL, string $channel = null)
@@ -114,16 +118,27 @@ class JobService extends BaseService implements JobServiceInterface
         $jobEntity->incrementAttempt();
         $isSuccess = false;
 
-        $jobInstance->run();
-        $jobEntity->setCompleted();
-        $isSuccess = true;
+
+
+        $logContext = [
+            'job' => EntityHelper::toArray($jobEntity, true),
+        ];
 
         try {
-
+            $jobInstance->run();
+            $jobEntity->setCompleted();
+            $isSuccess = true;
         } catch (\Throwable $e) {
-
+            $logContext['error'] = EntityHelper::toArray($e, true);
         }
         $this->getRepository()->update($jobEntity);
+
+        if($isSuccess) {
+            $this->logger->info('CRON task run success', $logContext);
+        } else {
+            $this->logger->error('CRON task run fail', $logContext);
+        }
+
         return $isSuccess;
     }
 

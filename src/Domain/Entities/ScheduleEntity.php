@@ -27,6 +27,8 @@ class ScheduleEntity implements EntityIdInterface, ValidateEntityByMetadataInter
 
     protected $statusId = null;
 
+    protected $executedAt = null;
+
     protected $createdAt = null;
 
     protected $updatedAt = null;
@@ -49,7 +51,7 @@ class ScheduleEntity implements EntityIdInterface, ValidateEntityByMetadataInter
             'class' => StatusEnum::class,
         ]));
         $metadata->addPropertyConstraint('createdAt', new Assert\NotBlank());
-        $metadata->addPropertyConstraint('updatedAt', new Assert\NotBlank());
+//        $metadata->addPropertyConstraint('updatedAt', new Assert\NotBlank());
     }
 
     public function unique() : array
@@ -115,6 +117,16 @@ class ScheduleEntity implements EntityIdInterface, ValidateEntityByMetadataInter
     public function getStatusId()
     {
         return $this->statusId;
+    }
+
+    public function getExecutedAt()
+    {
+        return $this->executedAt;
+    }
+
+    public function setExecutedAt($executedAt): void
+    {
+        $this->executedAt = $executedAt;
     }
 
     public function setCreatedAt($value) : void

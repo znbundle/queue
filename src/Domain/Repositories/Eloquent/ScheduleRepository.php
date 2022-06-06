@@ -6,6 +6,7 @@ use Illuminate\Support\Collection;
 use ZnBundle\Queue\Domain\Entities\ScheduleEntity;
 use ZnBundle\Queue\Domain\Interfaces\Repositories\ScheduleRepositoryInterface;
 use ZnCore\Domain\Libs\Query;
+use ZnDatabase\Base\Domain\Mappers\TimeMapper;
 use ZnDatabase\Eloquent\Domain\Base\BaseEloquentCrudRepository;
 
 class ScheduleRepository extends BaseEloquentCrudRepository implements ScheduleRepositoryInterface
@@ -28,5 +29,12 @@ class ScheduleRepository extends BaseEloquentCrudRepository implements ScheduleR
             $query->where('channel', $channel);
         }
         return $this->all($query);
+    }
+
+    public function mappers(): array
+    {
+        return [
+            new TimeMapper(['executed_at', 'created_at', 'updated_at']),
+        ];
     }
 }

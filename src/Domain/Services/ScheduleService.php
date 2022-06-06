@@ -2,7 +2,10 @@
 
 namespace ZnBundle\Queue\Domain\Services;
 
+use Cron\CronExpression;
+use DateTime;
 use Illuminate\Support\Collection;
+use Psr\Log\LoggerInterface;
 use ZnBundle\Queue\Domain\Entities\JobEntity;
 use ZnBundle\Queue\Domain\Entities\ScheduleEntity;
 use ZnBundle\Queue\Domain\Interfaces\Repositories\ScheduleRepositoryInterface;
@@ -18,9 +21,12 @@ use ZnCore\Domain\Libs\Query;
 class ScheduleService extends BaseCrudService implements ScheduleServiceInterface
 {
 
-    public function __construct(EntityManagerInterface $em)
+    private $logger;
+
+    public function __construct(EntityManagerInterface $em, LoggerInterface $logger)
     {
         $this->setEntityManager($em);
+        $this->logger = $logger;
     }
 
     public function getEntityClass(): string
@@ -45,21 +51,59 @@ class ScheduleService extends BaseCrudService implements ScheduleServiceInterfac
     public function runAll(string $channel = null): Collection
     {
         $jobCollection = new Collection();
+        /** @var ScheduleEntity[] $collection */
         $collection = $this->allByChannel($channel);
-        if(!$collection->isEmpty()) {
+        if (!$collection->isEmpty()) {
             foreach ($collection as $scheduleEntity) {
-                // todo: use - https://packagist.org/packages/dragonmantank/cron-expression
-                // https://crontab.guru/
-
-                $jobEntity = new JobEntity();
-                $jobEntity->setChannel($scheduleEntity->getChannel());
-                $jobEntity->setClass($scheduleEntity->getClass());
-                $jobEntity->setData($scheduleEntity->getData());
-//            $jobEntity->setPriority();
-
-                $jobCollection->add($jobEntity);
+                if ($this->isDue($scheduleEntity)) {
+                    $jobEntity = new JobEntity();
+                    $jobEntity->setChannel($scheduleEntity->getChannel());
+                    $jobEntity->setClass($scheduleEntity->getClass());
+                    $jobEntity->setData($scheduleEntity->getData());
+//                    $jobEntity->setPriority();
+                    $jobCollection->add($jobEntity);
+                    $this->updateExecutedAt($scheduleEntity);
+                }
             }
         }
         return $jobCollection;
     }
+
+    protected function updateExecutedAt(ScheduleEntity $scheduleEntity): void
+    {
+        $now = new DateTime();
+        $scheduleEntity->setExecutedAt($now);
+        $this->getEntityManager()->persist($scheduleEntity);
+    }
+
+    protected function isDue(ScheduleEntity $scheduleEntity): bool
+    {
+        $executedAt = $scheduleEntity->getExecutedAt();
+        if (!$executedAt) {
+            return true;
+        }
+        $dueTime = $this->dueTime($scheduleEntity);
+        $isDue = $dueTime >= 0;
+        return $isDue;
+    }
+
+    protected function dueTime(ScheduleEntity $scheduleEntity): int
+    {
+        $nextTime = $this->getNextTimeByScheduleEntity($scheduleEntity);
+        $now = new DateTime();
+        $dueTime = $now->getTimestamp() - $nextTime->getTimestamp();
+        return $dueTime;
+    }
+
+    protected function getNextTimeByScheduleEntity(ScheduleEntity $scheduleEntity): DateTime
+    {
+        $executedAt = $scheduleEntity->getExecutedAt();
+        $expression = $scheduleEntity->getExpression();
+        $cron = new CronExpression($expression);
+        return $cron->getNextRunDate($executedAt);
+    }
 }
+
+
+// todo: use - https://packagist.org/packages/dragonmantank/cron-expression
+// https://crontab.guru/
