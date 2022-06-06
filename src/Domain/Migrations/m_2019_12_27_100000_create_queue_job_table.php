@@ -19,7 +19,7 @@ class m_2019_12_27_100000_create_queue_job_table extends BaseCreateTableMigratio
             $table->integer('id')->autoIncrement()->comment('Идентификатор');
             $table->string('channel')->comment('Имя канала потока обработки');
             $table->string('class')->comment('Имя класса');
-            $table->text('data')->comment('Данные для задачи');
+            $table->text('data')->nullable()->comment('Данные для задачи');
             $table->integer('priority')->default(PriorityEnum::NORMAL)->comment('Приоритет выполнения');
             $table->integer('delay')->default(0)->comment('Допустимая задержка');
             $table->integer('attempt')->default(0)->comment('Номер попытки выполнения');

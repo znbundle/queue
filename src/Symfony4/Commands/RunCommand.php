@@ -41,16 +41,23 @@ class RunCommand extends Command
 
         $total = $this->jobService->runAll($channel);
         //dd($total->getSuccess());
-        if ($total->getSuccess()) {
+        if ($total->getSuccess() + $total->getFail() > 0) {
 
-            $message = '<fg=green>Complete ' . $total->getSuccess() . ' jobs!</>';
-            $message .= ' ' . (new \DateTime())->format('Y-m-d H:i:s');
-            $output->writeln($message);
+            if($total->getSuccess()) {
+                $message = '<fg=green>Complete ' . $total->getSuccess() . ' jobs!</>';
+                $message .= ' ' . (new \DateTime())->format('Y-m-d H:i:s');
+                $output->writeln($message);
+            }
+
+            if ($total->getFail()) {
+                $output->writeln('<fg=red>Error '.$total->getFail().' jobs!</>');
+            }
 
 //            $output->writeln('<fg=green>Complete ' . $total->getSuccess() . ' jobs!</>');
         } else {
             $output->writeln('<fg=magenta>Jobs empty!</>');
         }
+
         $output->writeln('');
 
         return 0;

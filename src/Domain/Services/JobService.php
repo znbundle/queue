@@ -13,6 +13,7 @@ use ZnBundle\Queue\Domain\Interfaces\Repositories\JobRepositoryInterface;
 use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
 use ZnBundle\Queue\Domain\Interfaces\Services\ScheduleServiceInterface;
 use ZnBundle\Queue\Domain\Queries\NewTaskQuery;
+use ZnCore\Base\Enums\StatusEnum;
 use ZnCore\Base\Libs\DotEnv\DotEnv;
 use ZnCore\Domain\Base\BaseService;
 use ZnCore\Domain\Helpers\EntityHelper;
@@ -63,11 +64,16 @@ class JobService extends BaseService implements JobServiceInterface
 
         $this->getRepository()->create($jobEntity);
 
+        $this->touch();
+
+        return $jobEntity;
+    }
+
+    public function touch(): void
+    {
         if (DotEnv::get('CRON_AUTORUN', false) == 1) {
             $this->runAll();
         }
-
-        return $jobEntity;
     }
 
     public function newTasks(string $channel = null): Collection
@@ -119,7 +125,6 @@ class JobService extends BaseService implements JobServiceInterface
         $isSuccess = false;
 
 
-
         $logContext = [
             'job' => EntityHelper::toArray($jobEntity, true),
         ];
@@ -130,10 +135,13 @@ class JobService extends BaseService implements JobServiceInterface
             $isSuccess = true;
         } catch (\Throwable $e) {
             $logContext['error'] = EntityHelper::toArray($e, true);
+            if($jobEntity->getAttempt() >= 3) {
+                $jobEntity->setStatus(StatusEnum::BLOCKED);
+            }
         }
         $this->getRepository()->update($jobEntity);
 
-        if($isSuccess) {
+        if ($isSuccess) {
             $this->logger->info('CRON task run success', $logContext);
         } else {
             $this->logger->error('CRON task run fail', $logContext);

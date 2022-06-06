@@ -49,8 +49,10 @@ class ListenerCommand extends Command
                 $message = '<fg=green>Complete ' . $total->getSuccess() . ' jobs!</>';
                 $message .= ' ' . (new \DateTime())->format('Y-m-d H:i:s');
                 $output->writeln($message);
-            } else {
-                //$output->writeln('<fg=magenta>Jobs empty!</>');
+            }
+
+            if ($total->getFail()) {
+                $output->writeln('<fg=red>Error '.$total->getFail().' jobs!</>');
             }
             //$output->writeln('');
         }

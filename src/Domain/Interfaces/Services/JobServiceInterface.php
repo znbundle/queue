@@ -13,4 +13,5 @@ interface JobServiceInterface
 
     public function runAll(string $channel = null): TotalEntity;
 
+    public function touch(): void;
 }
