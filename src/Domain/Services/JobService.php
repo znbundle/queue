@@ -78,6 +78,8 @@ class JobService extends BaseService implements JobServiceInterface
 
     public function newTasks(string $channel = null): Collection
     {
+        $scheduleJobCollection = $this->scheduleService->runAll($channel);
+//        $this->persistCollection($scheduleJobCollection);
         $query = new NewTaskQuery($channel);
         $jobCollection = $this->getRepository()->all($query);
         return $jobCollection;
@@ -85,14 +87,18 @@ class JobService extends BaseService implements JobServiceInterface
 
     public function runAll(string $channel = null): TotalEntity
     {
-        $scheduleJobCollection = $this->scheduleService->runAll($channel);
-        $this->persistCollection($scheduleJobCollection);
+//        $scheduleJobCollection = $this->scheduleService->runAll($channel);
+//        $this->persistCollection($scheduleJobCollection);
 
 //        dd($scheduleJobCollection);
 
-        $query = new NewTaskQuery($channel);
+        $jobCollection = $this->newTasks($channel);
+
+//        $query = new NewTaskQuery($channel);
         /** @var Collection | JobEntity[] $jobCollection */
-        $jobCollection = $this->getRepository()->all($query);
+//        $jobCollection = $this->getRepository()->all($query);
+
+
         $totalEntity = new TotalEntity;
         foreach ($jobCollection as $jobEntity) {
             $isSuccess = $this->runJob($jobEntity);
@@ -118,7 +124,7 @@ class JobService extends BaseService implements JobServiceInterface
         }
     }
 
-    private function runJob(JobEntity $jobEntity)
+    public function runJob(JobEntity $jobEntity)
     {
         $jobInstance = $this->getJobInstance($jobEntity, $this->container);
         $jobEntity->incrementAttempt();

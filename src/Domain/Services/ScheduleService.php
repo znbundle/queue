@@ -61,7 +61,8 @@ class ScheduleService extends BaseCrudService implements ScheduleServiceInterfac
                     $jobEntity->setClass($scheduleEntity->getClass());
                     $jobEntity->setData($scheduleEntity->getData());
 //                    $jobEntity->setPriority();
-                    $jobCollection->add($jobEntity);
+                    $this->getEntityManager()->persist($jobEntity);
+//                    $jobCollection->add($jobEntity);
                     $this->updateExecutedAt($scheduleEntity);
                 }
             }

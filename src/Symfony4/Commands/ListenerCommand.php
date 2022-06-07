@@ -11,6 +11,7 @@ use Symfony\Component\Process\Process;
 use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
 use ZnBundle\Queue\Symfony4\Widgets\TotalQueueWidget;
 use ZnCore\Base\Enums\Measure\TimeEnum;
+use ZnCore\Base\Helpers\StringHelper;
 use ZnCore\Base\Libs\FileSystem\Helpers\FilePathHelper;
 use ZnCore\Base\Libs\Shell\ShellCommand;
 use ZnSandbox\Sandbox\Process\Libs\LoopCron;
@@ -21,6 +22,7 @@ class ListenerCommand extends Command
 
     protected static $defaultName = 'queue:listener';
     private $jobService;
+    private $cron;
 
     public function __construct(?string $name = null, JobServiceInterface $jobService)
     {
@@ -54,15 +56,14 @@ class ListenerCommand extends Command
             $output->writeln("Channel: <fg=blue>all</>");
         }
 
-        $output->writeln('');
+        $this->cron = new LoopCron('cronListener-' . ($channel ?: 'all'));
 
         $callback = function () use ($input, $output) {
             $this->runAll($input, $output);
         };
 
-        $cron = new LoopCron('cronListener');
-        $cron->setCallback($callback);
-        $cron->start();
+        $this->cron->setCallback($callback);
+        $this->cron->start();
 
         /*while (1 == 1) {
             usleep(1 / TimeEnum::SECOND_PER_MICROSECOND);
@@ -124,14 +125,15 @@ class ListenerCommand extends Command
     protected function runWrapped(InputInterface $input, OutputInterface $output): void
     {
         $channel = $input->getArgument('channel');
-        $commandOutput = $this->runConsoleCommand($channel);
-        $commandOutput = trim($commandOutput);
+        $this->runConsoleCommand($channel, $output);
+
+        /*$commandOutput = trim($commandOutput);
         if ($commandOutput) {
             $output->writeln($commandOutput);
-        }
+        }*/
     }
 
-    protected function runConsoleCommand($channel): ?string
+    protected function runConsoleCommand(?string $channel, OutputInterface $output)//: ?string
     {
         $path = FilePathHelper::rootPath() . '/vendor/zncore/base/bin';
 
@@ -144,11 +146,24 @@ class ListenerCommand extends Command
             $channel,
             "--wrapped=1",
         ], $path);
-        $process->run();
+//        $process->run();
+
+
+        $tick = function ($type, $buffer) use($output) {
+            $output->write($buffer);
+            $this->cron->tick();
+            /*if (Process::ERR === $type) {
+                $output->writeln('ERR > '.$buffer);
+            } else {
+                $output->writeln('OUT > '.$buffer);
+            }*/
+        };
+
+        $process->run($tick);
         $processFix->restoreEnv();
 
-        $commandOutput = $process->getOutput();
-        return $commandOutput;
+//        $commandOutput = $process->getOutput();
+//        return $commandOutput;
     }
 
     protected function runConsoleCommand111111($channel): ?string
