@@ -7,11 +7,14 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Process;
 use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
 use ZnBundle\Queue\Symfony4\Widgets\TotalQueueWidget;
 use ZnCore\Base\Enums\Measure\TimeEnum;
 use ZnCore\Base\Libs\FileSystem\Helpers\FilePathHelper;
 use ZnCore\Base\Libs\Shell\ShellCommand;
+use ZnSandbox\Sandbox\Process\Libs\LoopCron;
+use ZnSandbox\Sandbox\Process\Libs\ProcessFix;
 
 class ListenerCommand extends Command
 {
@@ -53,10 +56,19 @@ class ListenerCommand extends Command
 
         $output->writeln('');
 
-        while (1 == 1) {
+        $callback = function () use ($input, $output) {
+            $this->runAll($input, $output);
+        };
+
+        $cron = new LoopCron('cronListener');
+        $cron->setCallback($callback);
+        $cron->start();
+
+        /*while (1 == 1) {
             usleep(1 / TimeEnum::SECOND_PER_MICROSECOND);
             $this->runAll($input, $output);
-        }
+        }*/
+
         return 0;
     }
 
@@ -84,7 +96,8 @@ class ListenerCommand extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      */
-    protected function runNormal(InputInterface $input, OutputInterface $output): void {
+    protected function runNormal(InputInterface $input, OutputInterface $output): void
+    {
         $channel = $input->getArgument('channel');
         $totalEntity = $this->jobService->runAll($channel);
         if ($totalEntity->getAll()) {
@@ -108,24 +121,45 @@ class ListenerCommand extends Command
      * @param OutputInterface $output
      * @throws \ZnCore\Base\Libs\Shell\ShellException
      */
-    protected function runWrapped(InputInterface $input, OutputInterface $output): void {
+    protected function runWrapped(InputInterface $input, OutputInterface $output): void
+    {
         $channel = $input->getArgument('channel');
-        $runCommand = [
-            "php zn queue:run",
-            $channel,
-            [
-                "--wrapped"=>true
-            ],
-        ];
-//        $runCommand = "php zn queue:run {$channel} --wrapped=1";
-
-        $commandOutput = $this->runConsoleCommand($runCommand);
+        $commandOutput = $this->runConsoleCommand($channel);
+        $commandOutput = trim($commandOutput);
         if ($commandOutput) {
             $output->writeln($commandOutput);
         }
     }
 
-    protected function runConsoleCommand($runCommand): ?string {
+    protected function runConsoleCommand($channel): ?string
+    {
+        $path = FilePathHelper::rootPath() . '/vendor/zncore/base/bin';
+
+        $processFix = new ProcessFix();
+        $processFix->backupEnv();
+        $process = new Process([
+            'php',
+            'zn',
+            'queue:run',
+            $channel,
+            "--wrapped=1",
+        ], $path);
+        $process->run();
+        $processFix->restoreEnv();
+
+        $commandOutput = $process->getOutput();
+        return $commandOutput;
+    }
+
+    protected function runConsoleCommand111111($channel): ?string
+    {
+        $runCommand = [
+            "php zn queue:run",
+            $channel,
+            [
+                "--wrapped" => true
+            ],
+        ];
         $path = FilePathHelper::rootPath() . '/vendor/zncore/base/bin';
         $shellCommand = new ShellCommand();
         $shellCommand->setPath($path);
