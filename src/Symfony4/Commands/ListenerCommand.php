@@ -146,8 +146,9 @@ class ListenerCommand extends Command
     {
         $path = FilePathHelper::rootPath() . '/vendor/zncore/base/bin';
 
-        $processFix = new ProcessFix();
-        $processFix->backupEnv();
+//        $processFix = new ProcessFix();
+//        dd($_ENV);
+//        $processFix->backupEnv();
         $process = new Process([
             'php',
             'zn',
@@ -169,7 +170,7 @@ class ListenerCommand extends Command
         };
 
         $process->run($tick);
-        $processFix->restoreEnv();
+//        $processFix->restoreEnv();
 
 //        $commandOutput = $process->getOutput();
 //        return $commandOutput;
