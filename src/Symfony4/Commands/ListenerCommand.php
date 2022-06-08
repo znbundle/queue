@@ -2,6 +2,7 @@
 
 namespace ZnBundle\Queue\Symfony4\Commands;
 
+use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,6 +15,7 @@ use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
 use ZnBundle\Queue\Symfony4\Widgets\TotalQueueWidget;
 use ZnCore\Base\Helpers\InstanceHelper;
 use ZnCore\Base\Libs\Container\Helpers\ContainerHelper;
+use ZnCore\Base\Libs\Container\Traits\ContainerAwareTrait;
 use ZnCore\Base\Libs\FileSystem\Helpers\FilePathHelper;
 use ZnCore\Base\Libs\Shell\ShellCommand;
 use ZnSandbox\Sandbox\Process\Libs\LoopCron;
@@ -22,14 +24,17 @@ use ZnSandbox\Sandbox\Process\Libs\ProcessFix;
 class ListenerCommand extends Command
 {
 
+    use ContainerAwareTrait;
+
     protected static $defaultName = 'queue:listener';
     private $jobService;
     private $cron;
 
-    public function __construct(?string $name = null, JobServiceInterface $jobService)
+    public function __construct(?string $name = null, JobServiceInterface $jobService, ContainerInterface $container)
     {
         parent::__construct($name);
         $this->jobService = $jobService;
+        $this->setContainer($container);
     }
 
     protected function configure()
@@ -65,7 +70,7 @@ class ListenerCommand extends Command
 //        $this->cron = new LoopCron($name);
         $this->cron = InstanceHelper::create(LoopCron::class, [
             'name' => $name,
-        ]);
+        ], $this->getContainer());
         $this->cron->setCallback($callback);
 
         try {
