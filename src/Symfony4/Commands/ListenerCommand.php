@@ -7,11 +7,10 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Lock\Exception\LockConflictedException;
 use Symfony\Component\Process\Process;
 use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
 use ZnBundle\Queue\Symfony4\Widgets\TotalQueueWidget;
-use ZnCore\Base\Enums\Measure\TimeEnum;
-use ZnCore\Base\Helpers\StringHelper;
 use ZnCore\Base\Libs\FileSystem\Helpers\FilePathHelper;
 use ZnCore\Base\Libs\Shell\ShellCommand;
 use ZnSandbox\Sandbox\Process\Libs\LoopCron;
@@ -56,14 +55,18 @@ class ListenerCommand extends Command
             $output->writeln("Channel: <fg=blue>all</>");
         }
 
-        $this->cron = new LoopCron('cronListener-' . ($channel ?: 'all'));
-
+        $name = 'cronListener-' . ($channel ?: 'all');
         $callback = function () use ($input, $output) {
             $this->runAll($input, $output);
         };
-
+        $this->cron = new LoopCron($name);
         $this->cron->setCallback($callback);
-        $this->cron->start();
+
+        try {
+            $this->cron->start();
+        } catch (LockConflictedException $e) {
+            $output->writeln($e->getMessage());
+        }
 
         /*while (1 == 1) {
             usleep(1 / TimeEnum::SECOND_PER_MICROSECOND);
@@ -149,7 +152,7 @@ class ListenerCommand extends Command
 //        $process->run();
 
 
-        $tick = function ($type, $buffer) use($output) {
+        $tick = function ($type, $buffer) use ($output) {
             $output->write($buffer);
             $this->cron->tick();
             /*if (Process::ERR === $type) {

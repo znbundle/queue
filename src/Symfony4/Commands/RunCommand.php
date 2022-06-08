@@ -7,6 +7,9 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Lock\LockFactory;
+use Symfony\Component\Lock\LockInterface;
+use Symfony\Component\Lock\Store\SemaphoreStore;
 use ZnBundle\Queue\Domain\Entities\TotalEntity;
 use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
 use ZnBundle\Queue\Symfony4\Widgets\TotalQueueWidget;
@@ -18,6 +21,7 @@ class RunCommand extends Command
 
     protected static $defaultName = 'queue:run';
     private $jobService;
+    private $lock;
 
     public function __construct(?string $name = null, JobServiceInterface $jobService)
     {
@@ -44,20 +48,45 @@ class RunCommand extends Command
         $wrapped = $input->getOption('wrapped');
         $channel = $input->getArgument('channel');
 
-        if(!$wrapped) {
+        if (!$wrapped) {
             $output->writeln('<fg=white># Queue run</>');
             $output->writeln('');
-
-
             if ($channel) {
                 $output->writeln("Channel: <fg=blue>{$channel}</>");
             } else {
                 $output->writeln("Channel: <fg=blue>all</>");
             }
-
             $output->writeln('');
         }
 
+
+        $name = 'cronRun-' . ($channel ?: 'all');
+        $this->lock = $this->createLockInstance($name);
+        if ($this->lock->acquire()) {
+            try {
+                $totalEntity = $this->runQueues($channel, $output);
+                if (!$wrapped || $totalEntity->getAll()) {
+                    $this->showTotal($totalEntity, $output);
+                }
+            } finally {
+                $this->lock->release();
+            }
+        } else {
+            $output->writeln('<fg=yellow>Locked!</>');
+        }
+
+        return 0;
+    }
+
+    protected function showTotal(TotalEntity $totalEntity, OutputInterface $output)
+    {
+        $totalWidget = new TotalQueueWidget($output);
+        $totalWidget->run($totalEntity);
+        $output->writeln('');
+    }
+
+    protected function runQueues($channel, OutputInterface $output): TotalEntity
+    {
         $jobCollection = $this->jobService->newTasks($channel);
 //        dd($jobCollection);
 
@@ -83,16 +112,17 @@ class RunCommand extends Command
                 $totalEntity->incrementFail($jobEntity);
                 $logWidget->finishFail();
             }
+
+//            sleep(10);
+            $this->lock->refresh();
         }
+        return $totalEntity;
+    }
 
-//        $totalEntity = $this->jobService->runAll($channel);
-
-        if(!$wrapped || $totalEntity->getAll()) {
-            $totalWidget = new TotalQueueWidget($output);
-            $totalWidget->run($totalEntity);
-            $output->writeln('');
-        }
-
-        return 0;
+    protected function createLockInstance(string $name): LockInterface
+    {
+        $store = new SemaphoreStore();
+        $factory = new LockFactory($store);
+        return $factory->createLock($name, 30);
     }
 }

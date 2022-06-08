@@ -11,6 +11,7 @@
 	"minimum-stability": "dev",
 	"require": {
 		"symfony/console": "4.*|5.*",
+		"symfony/lock": "4.*|5.*",
 		"dragonmantank/cron-expression": "v3.3.1"
 	},
 	"autoload": {
