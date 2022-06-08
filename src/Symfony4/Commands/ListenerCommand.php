@@ -8,9 +8,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Lock\Exception\LockConflictedException;
+use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Process\Process;
 use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
 use ZnBundle\Queue\Symfony4\Widgets\TotalQueueWidget;
+use ZnCore\Base\Helpers\InstanceHelper;
+use ZnCore\Base\Libs\Container\Helpers\ContainerHelper;
 use ZnCore\Base\Libs\FileSystem\Helpers\FilePathHelper;
 use ZnCore\Base\Libs\Shell\ShellCommand;
 use ZnSandbox\Sandbox\Process\Libs\LoopCron;
@@ -59,7 +62,10 @@ class ListenerCommand extends Command
         $callback = function () use ($input, $output) {
             $this->runAll($input, $output);
         };
-        $this->cron = new LoopCron($name);
+//        $this->cron = new LoopCron($name);
+        $this->cron = InstanceHelper::create(LoopCron::class, [
+            'name' => $name,
+        ]);
         $this->cron->setCallback($callback);
 
         try {

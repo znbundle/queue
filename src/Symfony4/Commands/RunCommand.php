@@ -21,12 +21,20 @@ class RunCommand extends Command
 
     protected static $defaultName = 'queue:run';
     private $jobService;
-    private $lock;
 
-    public function __construct(?string $name = null, JobServiceInterface $jobService)
+    /** @var LockInterface */
+    private $lock;
+    private $lockFactory;
+
+    public function __construct(
+        ?string $name = null,
+        JobServiceInterface $jobService,
+        LockFactory $lockFactory
+    )
     {
         parent::__construct($name);
         $this->jobService = $jobService;
+        $this->lockFactory = $lockFactory;
     }
 
     protected function configure()
@@ -61,7 +69,8 @@ class RunCommand extends Command
 
 
         $name = 'cronRun-' . ($channel ?: 'all');
-        $this->lock = $this->createLockInstance($name);
+//        $this->lock = $this->createLockInstance($name);
+        $this->lock = $this->lockFactory->createLock($name, 30);
         if ($this->lock->acquire()) {
             try {
                 $totalEntity = $this->runQueues($channel, $output);
@@ -119,10 +128,11 @@ class RunCommand extends Command
         return $totalEntity;
     }
 
-    protected function createLockInstance(string $name): LockInterface
+    /*protected function createLockInstance(string $name): LockInterface
     {
-        $store = new SemaphoreStore();
-        $factory = new LockFactory($store);
-        return $factory->createLock($name, 30);
-    }
+//        $store = new SemaphoreStore();
+//        $factory = new LockFactory($store);
+
+        return $this->lockFactory->createLock($name, 30);
+    }*/
 }
