@@ -9,20 +9,15 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Lock\Exception\LockConflictedException;
-use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Process\Process;
 use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
 use ZnBundle\Queue\Symfony4\Widgets\TotalQueueWidget;
 use ZnCore\Base\Helpers\InstanceHelper;
-use ZnCore\Base\Libs\Container\Helpers\ContainerHelper;
 use ZnCore\Base\Libs\Container\Traits\ContainerAwareTrait;
 use ZnCore\Base\Libs\FileSystem\Helpers\FilePathHelper;
-use ZnCore\Base\Libs\Shell\CommandForm;
-use ZnCore\Base\Libs\Shell\Helpers\CommandHelper;
-use ZnCore\Base\Libs\Shell\ShellCommand;
-use ZnLib\Console\Symfony4\Helpers\CommandLineHelper;
+use ZnLib\Console\Domain\Exceptions\ShellException;
+use ZnLib\Console\Domain\Helpers\CommandLineHelper;
 use ZnSandbox\Sandbox\Process\Libs\LoopCron;
-use ZnSandbox\Sandbox\Process\Libs\ProcessFix;
 
 class ListenerCommand extends Command
 {
@@ -33,7 +28,11 @@ class ListenerCommand extends Command
     private $jobService;
     private $cron;
 
-    public function __construct(?string $name = null, JobServiceInterface $jobService, ContainerInterface $container)
+    public function __construct(
+        ?string $name = null,
+        JobServiceInterface $jobService,
+        ContainerInterface $container
+    )
     {
         parent::__construct($name);
         $this->jobService = $jobService;
@@ -43,9 +42,7 @@ class ListenerCommand extends Command
     protected function configure()
     {
         $this->addArgument('channel', InputArgument::OPTIONAL);
-
-        $this
-            ->addOption(
+        $this->addOption(
                 'wrapped',
                 null,
                 InputOption::VALUE_OPTIONAL,
@@ -70,22 +67,19 @@ class ListenerCommand extends Command
         $callback = function () use ($input, $output) {
             $this->runAll($input, $output);
         };
-//        $this->cron = new LoopCron($name);
-        $this->cron = InstanceHelper::create(LoopCron::class, [
+
+        /** @var LoopCron $cron */
+        $cron = InstanceHelper::create(LoopCron::class, [
             'name' => $name,
         ], $this->getContainer());
-        $this->cron->setCallback($callback);
+        $cron->setCallback($callback);
+        $this->cron = $cron;
 
         try {
-            $this->cron->start();
+            $cron->start();
         } catch (LockConflictedException $e) {
             $output->writeln($e->getMessage());
         }
-
-        /*while (1 == 1) {
-            usleep(1 / TimeEnum::SECOND_PER_MICROSECOND);
-            $this->runAll($input, $output);
-        }*/
 
         return 0;
     }
@@ -137,40 +131,17 @@ class ListenerCommand extends Command
      *
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @throws \ZnCore\Base\Libs\Shell\ShellException
+     * @throws ShellException
      */
     protected function runWrapped(InputInterface $input, OutputInterface $output): void
     {
         $channel = $input->getArgument('channel');
         $this->runConsoleCommand($channel, $output);
-
-        /*$commandOutput = trim($commandOutput);
-        if ($commandOutput) {
-            $output->writeln($commandOutput);
-        }*/
     }
 
     protected function runConsoleCommand(?string $channel, OutputInterface $output)//: ?string
     {
         $path = FilePathHelper::rootPath() . '/vendor/zncore/base/bin';
-
-        /*$commandForm = new CommandForm();
-        $commandForm->setPath($path);
-        $commandForm->setLang('en_GB');
-//        $commandForm->setCommand('php');
-        $commandForm->setArguments([
-            'php',
-            'zn',
-            'queue:run',
-            $channel,
-            "--wrapped" => 1,
-        ]);
-
-        $commandString = CommandHelper::getCommandString($commandForm);
-
-        dd($commandString);
-        $process = Process::fromShellCommandline($commandString, $commandForm->getPath());*/
-
         $commandString = CommandLineHelper::argsToString([
             'php',
             'zn',
@@ -179,59 +150,12 @@ class ListenerCommand extends Command
             "--wrapped" => 1,
         ]);
 //        $commandString = "php zn queue:run $channel --wrapped=1";
-//        dd($commandString);
 
         $process = Process::fromShellCommandline($commandString);
-
-
-//        $process = new Process($commandForm->getCommand(), $commandForm->getPath());
-
-        /*$process = new Process([
-            'php',
-            'zn',
-            'queue:run',
-            $channel,
-            "--wrapped=1",
-        ], $path);*/
-
-
-
-        //$process->setCommandLine();
-
-//        exec($process->getCommandLine());
-
-       // dd($process->getCommandLine());
-
         $tick = function ($type, $buffer) use ($output) {
             $output->write($buffer);
             $this->cron->tick();
-            /*if (Process::ERR === $type) {
-                $output->writeln('ERR > '.$buffer);
-            } else {
-                $output->writeln('OUT > '.$buffer);
-            }*/
         };
-
         $process->run($tick);
-
-//        $commandOutput = $process->getOutput();
-//        return $commandOutput;
-    }
-
-    protected function runConsoleCommand111111($channel): ?string
-    {
-        $runCommand = [
-            "php zn queue:run",
-            $channel,
-            [
-                "--wrapped" => true
-            ],
-        ];
-        $path = FilePathHelper::rootPath() . '/vendor/zncore/base/bin';
-        $shellCommand = new ShellCommand();
-        $shellCommand->setPath($path);
-        $shellResultEntity = $shellCommand->run($runCommand);
-        $commandOutput = $shellResultEntity->getOutputString();
-        return $commandOutput;
     }
 }
