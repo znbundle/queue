@@ -13,7 +13,7 @@ use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
 use ZnBundle\Queue\Symfony4\Widgets\TotalQueueWidget;
 use ZnCore\Base\Helpers\ClassHelper;
 use ZnLib\Console\Symfony4\Widgets\LogWidget;
-use ZnSandbox\Sandbox\Process\Traits\LockTrait;
+use ZnLib\Console\Symfony4\Traits\LockTrait;
 
 class RunCommand extends Command
 {

@@ -17,7 +17,7 @@ use ZnCore\Base\Libs\Container\Traits\ContainerAwareTrait;
 use ZnCore\Base\Libs\FileSystem\Helpers\FilePathHelper;
 use ZnLib\Console\Domain\Exceptions\ShellException;
 use ZnLib\Console\Domain\Helpers\CommandLineHelper;
-use ZnSandbox\Sandbox\Process\Traits\LockTrait;
+use ZnLib\Console\Symfony4\Traits\LockTrait;
 
 class ListenerCommand extends Command
 {
