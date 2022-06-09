@@ -12,8 +12,8 @@ use ZnBundle\Queue\Domain\Entities\TotalEntity;
 use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
 use ZnBundle\Queue\Symfony4\Widgets\TotalQueueWidget;
 use ZnCore\Base\Helpers\ClassHelper;
-use ZnLib\Console\Symfony4\Widgets\LogWidget;
 use ZnLib\Console\Symfony4\Traits\LockTrait;
+use ZnLib\Console\Symfony4\Widgets\LogWidget;
 
 class RunCommand extends Command
 {
@@ -38,12 +38,12 @@ class RunCommand extends Command
     {
         $this->addArgument('channel', InputArgument::OPTIONAL);
         $this->addOption(
-                'wrapped',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                '',
-                false
-            );
+            'wrapped',
+            null,
+            InputOption::VALUE_OPTIONAL,
+            '',
+            false
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -54,7 +54,8 @@ class RunCommand extends Command
         return Command::SUCCESS;
     }
 
-    protected function runProcess(InputInterface $input, OutputInterface $output): void {
+    protected function runProcess(InputInterface $input, OutputInterface $output): void
+    {
         $wrapped = $input->getOption('wrapped');
         $channel = $input->getArgument('channel');
 
@@ -104,7 +105,7 @@ class RunCommand extends Command
                 $totalEntity->incrementFail($jobEntity);
                 $logWidget->finishFail();
             }
-            $this->tick();
+            $this->refreshLock();
         }
         return $totalEntity;
     }

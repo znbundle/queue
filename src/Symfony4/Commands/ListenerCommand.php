@@ -3,7 +3,6 @@
 namespace ZnBundle\Queue\Symfony4\Commands;
 
 use Psr\Container\ContainerInterface;
-use React\EventLoop\Loop;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,12 +17,14 @@ use ZnCore\Base\Libs\FileSystem\Helpers\FilePathHelper;
 use ZnLib\Console\Domain\Exceptions\ShellException;
 use ZnLib\Console\Domain\Helpers\CommandLineHelper;
 use ZnLib\Console\Symfony4\Traits\LockTrait;
+use ZnLib\Console\Symfony4\Traits\LoopTrait;
 
 class ListenerCommand extends Command
 {
 
     use ContainerAwareTrait;
     use LockTrait;
+    use LoopTrait;
 
     protected static $defaultName = 'queue:listener';
     private $jobService;
@@ -46,26 +47,19 @@ class ListenerCommand extends Command
     {
         $this->addArgument('channel', InputArgument::OPTIONAL);
         $this->addOption(
-                'wrapped',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                '',
-                false
-            );
+            'wrapped',
+            null,
+            InputOption::VALUE_OPTIONAL,
+            '',
+            false
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $channel = $input->getArgument('channel');
         $output->writeln('<fg=white># Queue listener</>');
         $output->writeln('');
-        $channel = $input->getArgument('channel');
-        $name = 'cronListener-' . ($channel ?: 'all');
-        $this->runProcessWithLock($input, $output, $name);
-        return 0;
-    }
-
-    protected function runProcess(InputInterface $input, OutputInterface $output): void {
-        $channel = $input->getArgument('channel');
         if ($channel) {
             $output->writeln("Channel: <fg=blue>{$channel}</>");
         } else {
@@ -73,16 +67,13 @@ class ListenerCommand extends Command
         }
         $output->writeln("");
 
-        $callback = function () use ($input, $output) {
-            $this->runAll($input, $output);
-//            $output->writeln('sdsd');
-        };
-        $loop = Loop::get();
-        $loop->addPeriodicTimer(1, $callback);
-        $loop->run();
+        $name = 'cronListener-' . ($channel ?: 'all');
+        $this->setLoopInterval(1);
+        $this->runProcessWithLock($input, $output, $name);
+        return 0;
     }
 
-    protected function runAll(InputInterface $input, OutputInterface $output): void
+    protected function runLoopItem(InputInterface $input, OutputInterface $output): void
     {
         $wrapped = $input->getOption('wrapped');
         $channel = $input->getArgument('channel');
@@ -152,7 +143,7 @@ class ListenerCommand extends Command
         $process = Process::fromShellCommandline($commandString);
         $tick = function ($type, $buffer) use ($output) {
             $output->write($buffer);
-            $this->tick();
+            $this->refreshLock();
         };
         $process->run($tick);
     }
