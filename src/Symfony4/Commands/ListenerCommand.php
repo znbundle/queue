@@ -17,6 +17,8 @@ use ZnCore\Base\Helpers\InstanceHelper;
 use ZnCore\Base\Libs\Container\Helpers\ContainerHelper;
 use ZnCore\Base\Libs\Container\Traits\ContainerAwareTrait;
 use ZnCore\Base\Libs\FileSystem\Helpers\FilePathHelper;
+use ZnCore\Base\Libs\Shell\CommandForm;
+use ZnCore\Base\Libs\Shell\Helpers\CommandHelper;
 use ZnCore\Base\Libs\Shell\ShellCommand;
 use ZnSandbox\Sandbox\Process\Libs\LoopCron;
 use ZnSandbox\Sandbox\Process\Libs\ProcessFix;
@@ -45,7 +47,7 @@ class ListenerCommand extends Command
             ->addOption(
                 'wrapped',
                 null,
-                InputOption::VALUE_REQUIRED,
+                InputOption::VALUE_OPTIONAL,
                 '',
                 false
             );
@@ -151,18 +153,53 @@ class ListenerCommand extends Command
     {
         $path = FilePathHelper::rootPath() . '/vendor/zncore/base/bin';
 
-//        $processFix = new ProcessFix();
-//        dd($_ENV);
-//        $processFix->backupEnv();
-        $process = new Process([
+        /*$commandForm = new CommandForm();
+        $commandForm->setPath($path);
+        $commandForm->setLang('en_GB');
+//        $commandForm->setCommand('php');
+        $commandForm->setArguments([
+            'php',
+            'zn',
+            'queue:run',
+            $channel,
+            "--wrapped" => 1,
+        ]);
+
+        $commandString = CommandHelper::getCommandString($commandForm);
+
+        dd($commandString);
+        $process = Process::fromShellCommandline($commandString, $commandForm->getPath());*/
+
+        /*$commandString = CommandHelper::argsToString([
+            'php',
+            'zn',
+            'queue:run',
+            $channel,
+            "--wrapped" => 1,
+        ]);*/
+        $commandString = "php zn queue:run $channel --wrapped=1";
+//        dd($commandString);
+
+        $process = Process::fromShellCommandline($commandString);
+
+
+//        $process = new Process($commandForm->getCommand(), $commandForm->getPath());
+
+        /*$process = new Process([
             'php',
             'zn',
             'queue:run',
             $channel,
             "--wrapped=1",
-        ], $path);
-//        $process->run();
+        ], $path);*/
 
+
+
+        //$process->setCommandLine();
+
+//        exec($process->getCommandLine());
+
+       // dd($process->getCommandLine());
 
         $tick = function ($type, $buffer) use ($output) {
             $output->write($buffer);
@@ -175,7 +212,6 @@ class ListenerCommand extends Command
         };
 
         $process->run($tick);
-//        $processFix->restoreEnv();
 
 //        $commandOutput = $process->getOutput();
 //        return $commandOutput;

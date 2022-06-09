@@ -45,7 +45,7 @@ class RunCommand extends Command
             ->addOption(
                 'wrapped',
                 null,
-                InputOption::VALUE_REQUIRED,
+                InputOption::VALUE_OPTIONAL,
                 '',
                 false
             );
