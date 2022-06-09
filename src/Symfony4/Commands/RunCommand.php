@@ -8,23 +8,20 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Lock\LockFactory;
-use Symfony\Component\Lock\LockInterface;
-use Symfony\Component\Lock\Store\SemaphoreStore;
 use ZnBundle\Queue\Domain\Entities\TotalEntity;
 use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
 use ZnBundle\Queue\Symfony4\Widgets\TotalQueueWidget;
 use ZnCore\Base\Helpers\ClassHelper;
 use ZnLib\Console\Symfony4\Widgets\LogWidget;
+use ZnSandbox\Sandbox\Process\Traits\LockTrait;
 
 class RunCommand extends Command
 {
 
+    use LockTrait;
+
     protected static $defaultName = 'queue:run';
     private $jobService;
-
-    /** @var LockInterface */
-    private $lock;
-    private $lockFactory;
 
     public function __construct(
         ?string $name = null,
@@ -34,15 +31,13 @@ class RunCommand extends Command
     {
         parent::__construct($name);
         $this->jobService = $jobService;
-        $this->lockFactory = $lockFactory;
+        $this->setLockFactory($lockFactory);
     }
 
     protected function configure()
     {
         $this->addArgument('channel', InputArgument::OPTIONAL);
-
-        $this
-            ->addOption(
+        $this->addOption(
                 'wrapped',
                 null,
                 InputOption::VALUE_OPTIONAL,
@@ -53,6 +48,13 @@ class RunCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $channel = $input->getArgument('channel');
+        $name = 'cronRun-' . ($channel ?: 'all');
+        $this->runProcessWithLock($input, $output, $name);
+        return Command::SUCCESS;
+    }
+
+    protected function runProcess(InputInterface $input, OutputInterface $output): void {
         $wrapped = $input->getOption('wrapped');
         $channel = $input->getArgument('channel');
 
@@ -67,24 +69,10 @@ class RunCommand extends Command
             $output->writeln('');
         }
 
-
-        $name = 'cronRun-' . ($channel ?: 'all');
-//        $this->lock = $this->createLockInstance($name);
-        $this->lock = $this->lockFactory->createLock($name, 30);
-        if ($this->lock->acquire()) {
-            try {
-                $totalEntity = $this->runQueues($channel, $output);
-                if (!$wrapped || $totalEntity->getAll()) {
-                    $this->showTotal($totalEntity, $output);
-                }
-            } finally {
-                $this->lock->release();
-            }
-        } else {
-            $output->writeln('<fg=yellow>Locked!</>');
+        $totalEntity = $this->runQueues($channel, $output);
+        if (!$wrapped || $totalEntity->getAll()) {
+            $this->showTotal($totalEntity, $output);
         }
-
-        return 0;
     }
 
     protected function showTotal(TotalEntity $totalEntity, OutputInterface $output)
@@ -97,7 +85,6 @@ class RunCommand extends Command
     protected function runQueues($channel, OutputInterface $output): TotalEntity
     {
         $jobCollection = $this->jobService->newTasks($channel);
-//        dd($jobCollection);
 
         $logWidget = new LogWidget($output);
         $logWidget->setPretty(true);
@@ -109,10 +96,6 @@ class RunCommand extends Command
             $time = (new \DateTime())->format('Y-m-d H:i:s');
             $label = "{$jobEntity->getId()} - {$jobEntity->getChannel()} - {$class} - $time";
             $logWidget->start($label);
-
-//            $isSuccess = true;
-//            usleep(mt_rand(10000, 1000000));
-
             $isSuccess = $this->jobService->runJob($jobEntity);
             if ($isSuccess) {
                 $totalEntity->incrementSuccess($jobEntity);
@@ -121,18 +104,8 @@ class RunCommand extends Command
                 $totalEntity->incrementFail($jobEntity);
                 $logWidget->finishFail();
             }
-
-//            sleep(10);
-            $this->lock->refresh();
+            $this->tick();
         }
         return $totalEntity;
     }
-
-    /*protected function createLockInstance(string $name): LockInterface
-    {
-//        $store = new SemaphoreStore();
-//        $factory = new LockFactory($store);
-
-        return $this->lockFactory->createLock($name, 30);
-    }*/
 }
