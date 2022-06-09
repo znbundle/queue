@@ -20,6 +20,7 @@ use ZnCore\Base\Libs\FileSystem\Helpers\FilePathHelper;
 use ZnCore\Base\Libs\Shell\CommandForm;
 use ZnCore\Base\Libs\Shell\Helpers\CommandHelper;
 use ZnCore\Base\Libs\Shell\ShellCommand;
+use ZnLib\Console\Symfony4\Helpers\CommandLineHelper;
 use ZnSandbox\Sandbox\Process\Libs\LoopCron;
 use ZnSandbox\Sandbox\Process\Libs\ProcessFix;
 
@@ -170,15 +171,15 @@ class ListenerCommand extends Command
         dd($commandString);
         $process = Process::fromShellCommandline($commandString, $commandForm->getPath());*/
 
-        /*$commandString = CommandHelper::argsToString([
+        $commandString = CommandLineHelper::argsToString([
             'php',
             'zn',
             'queue:run',
             $channel,
             "--wrapped" => 1,
-        ]);*/
-        $commandString = "php zn queue:run $channel --wrapped=1";
-//        dd($commandString);
+        ]);
+//        $commandString = "php zn queue:run $channel --wrapped=1";
+        dd($commandString);
 
         $process = Process::fromShellCommandline($commandString);
 
