@@ -179,7 +179,7 @@ class ListenerCommand extends Command
             "--wrapped" => 1,
         ]);
 //        $commandString = "php zn queue:run $channel --wrapped=1";
-        dd($commandString);
+//        dd($commandString);
 
         $process = Process::fromShellCommandline($commandString);
 
