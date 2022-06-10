@@ -8,6 +8,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Lock\Exception\LockAcquiringException;
 use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Process\Process;
 use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
@@ -16,6 +17,7 @@ use ZnCore\Base\Libs\Container\Traits\ContainerAwareTrait;
 use ZnCore\Base\Libs\FileSystem\Helpers\FilePathHelper;
 use ZnLib\Console\Domain\Exceptions\ShellException;
 use ZnLib\Console\Domain\Helpers\CommandLineHelper;
+use ZnLib\Console\Symfony4\Traits\IOTrait;
 use ZnLib\Console\Symfony4\Traits\LockTrait;
 use ZnLib\Console\Symfony4\Traits\LoopTrait;
 
@@ -25,6 +27,7 @@ class ListenerCommand extends Command
     use ContainerAwareTrait;
     use LockTrait;
     use LoopTrait;
+    use IOTrait;
 
     protected static $defaultName = 'queue:listener';
     private $jobService;
@@ -57,6 +60,7 @@ class ListenerCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->setInputOutput($input, $output);
         $channel = $input->getArgument('channel');
         $output->writeln('<fg=white># Queue listener</>');
         $output->writeln('');
@@ -69,18 +73,27 @@ class ListenerCommand extends Command
 
         $name = 'cronListener-' . ($channel ?: 'all');
         $this->setLoopInterval(1);
-        $this->runProcessWithLock($input, $output, $name);
-        return 0;
+
+        try {
+            $this->runProcessWithLock($name);
+        } catch (LockAcquiringException $e) {
+            $output->writeln('<fg=yellow>' . $e->getMessage() . '</>');
+            $output->writeln('');
+        }
+
+        return Command::SUCCESS;
     }
 
-    protected function runLoopItem(InputInterface $input, OutputInterface $output): void
+    protected function runLoopItem(): void
     {
+        $input = $this->getInput();
+        $output = $this->getOutput();
         $wrapped = $input->getOption('wrapped');
         $channel = $input->getArgument('channel');
         if ($wrapped) {
-            $this->runWrapped($input, $output);
+            $this->runWrapped();
         } else {
-            $this->runNormal($input, $output);
+            $this->runNormal();
         }
     }
 
@@ -122,14 +135,17 @@ class ListenerCommand extends Command
      * @param OutputInterface $output
      * @throws ShellException
      */
-    protected function runWrapped(InputInterface $input, OutputInterface $output): void
+    protected function runWrapped(): void
     {
+        $input = $this->getInput();
         $channel = $input->getArgument('channel');
-        $this->runConsoleCommand($channel, $output);
+        $this->runConsoleCommand($channel);
     }
 
-    protected function runConsoleCommand(?string $channel, OutputInterface $output)//: ?string
+    protected function runConsoleCommand(?string $channel)//: ?string
     {
+        $input = $this->getInput();
+        $output = $this->getOutput();
         $path = FilePathHelper::rootPath() . '/vendor/zncore/base/bin';
         $commandString = CommandLineHelper::argsToString([
             'php',

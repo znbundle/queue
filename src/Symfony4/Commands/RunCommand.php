@@ -7,11 +7,13 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Lock\Exception\LockAcquiringException;
 use Symfony\Component\Lock\LockFactory;
 use ZnBundle\Queue\Domain\Entities\TotalEntity;
 use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
 use ZnBundle\Queue\Symfony4\Widgets\TotalQueueWidget;
 use ZnCore\Base\Helpers\ClassHelper;
+use ZnLib\Console\Symfony4\Traits\IOTrait;
 use ZnLib\Console\Symfony4\Traits\LockTrait;
 use ZnLib\Console\Symfony4\Widgets\LogWidget;
 
@@ -19,6 +21,7 @@ class RunCommand extends Command
 {
 
     use LockTrait;
+    use IOTrait;
 
     protected static $defaultName = 'queue:run';
     private $jobService;
@@ -48,14 +51,25 @@ class RunCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->setInputOutput($input, $output);
         $channel = $input->getArgument('channel');
         $name = 'cronRun-' . ($channel ?: 'all');
-        $this->runProcessWithLock($input, $output, $name);
+//        $this->runProcessWithLock($name);
+
+        try {
+            $this->runProcessWithLock($name);
+        } catch (LockAcquiringException $e) {
+            $output->writeln('<fg=yellow>' . $e->getMessage() . '</>');
+            $output->writeln('');
+        }
+
         return Command::SUCCESS;
     }
 
-    protected function runProcess(InputInterface $input, OutputInterface $output): void
+    protected function runProcess(): void
     {
+        $input = $this->getInput();
+        $output = $this->getOutput();
         $wrapped = $input->getOption('wrapped');
         $channel = $input->getArgument('channel');
 
@@ -70,21 +84,23 @@ class RunCommand extends Command
             $output->writeln('');
         }
 
-        $totalEntity = $this->runQueues($channel, $output);
+        $totalEntity = $this->runQueues($channel);
         if (!$wrapped || $totalEntity->getAll()) {
-            $this->showTotal($totalEntity, $output);
+            $this->showTotal($totalEntity);
         }
     }
 
-    protected function showTotal(TotalEntity $totalEntity, OutputInterface $output)
+    protected function showTotal(TotalEntity $totalEntity)
     {
+        $output = $this->getOutput();
         $totalWidget = new TotalQueueWidget($output);
         $totalWidget->run($totalEntity);
         $output->writeln('');
     }
 
-    protected function runQueues($channel, OutputInterface $output): TotalEntity
+    protected function runQueues($channel): TotalEntity
     {
+        $output = $this->getOutput();
         $jobCollection = $this->jobService->newTasks($channel);
 
         $logWidget = new LogWidget($output);
