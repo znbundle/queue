@@ -3,9 +3,11 @@
 namespace ZnBundle\Queue\Domain\Subscribers;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Process\Process;
 use Symfony\Contracts\EventDispatcher\Event;
 use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
 use ZnCore\Base\Libs\Container\Helpers\ContainerHelper;
+use ZnLib\Console\Domain\Libs\ZnShell;
 use ZnSandbox\Sandbox\App\Enums\AppEventEnum;
 
 /**
@@ -24,13 +26,23 @@ class AutorunQueueSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function onAfterInit(Event $event)
-    {
-        $callback = function () {
-            /** @var JobServiceInterface $jobService */
+    public function callbackWithShell() {
+        $shell = new ZnShell();
+        $process = $shell->getProcessFromCommandString('queue:run');
+//            $process->run();
+        $process->start();
+        $process->disableOutput();
+        while ($process->isRunning()) {}
+    }
+
+    public function callbackWithService() {
+        /** @var JobServiceInterface $jobService */
             $jobService = ContainerHelper::getContainer()->get(JobServiceInterface::class);
             $jobService->touch();
-        };
-        register_shutdown_function($callback);
+    }
+
+    public function onAfterInit(Event $event)
+    {
+        register_shutdown_function([$this, 'callbackWithService']);
     }
 }
