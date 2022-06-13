@@ -8,15 +8,14 @@ use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
 use ZnCore\Base\Libs\Container\Helpers\ContainerHelper;
 use ZnSandbox\Sandbox\App\Enums\AppEventEnum;
 
+/**
+ * Автозапуск CRON-задач при каждом запросе.
+ *
+ * Конфигурация в dotEnv по имени "CRON_AUTORUN".
+ * Значения: 0/1
+ */
 class AutorunQueueSubscriber implements EventSubscriberInterface
 {
-
-    /*private $jobService;
-
-    public function __construct(JobServiceInterface $jobService)
-    {
-        $this->jobService = $jobService;
-    }*/
 
     public static function getSubscribedEvents(): array
     {
@@ -27,7 +26,7 @@ class AutorunQueueSubscriber implements EventSubscriberInterface
 
     public function onAfterInit(Event $event)
     {
-        $callback = function() {
+        $callback = function () {
             /** @var JobServiceInterface $jobService */
             $jobService = ContainerHelper::getContainer()->get(JobServiceInterface::class);
             $jobService->touch();
