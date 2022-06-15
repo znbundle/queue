@@ -33,7 +33,7 @@ final class JobTest extends BaseTest
 
     private function makeContainer(): ContainerInterface
     {
-        $container = Container::getInstance();
+        $container = ContainerHelper::getContainer();
 
         $containerConfigurator = ContainerHelper::getContainerConfiguratorByContainer($container);
         $containerConfigurator->bind(Manager::class, \ZnDatabase\Eloquent\Domain\Capsule\Manager::class, true);
