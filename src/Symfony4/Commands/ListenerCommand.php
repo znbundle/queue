@@ -106,12 +106,11 @@ class ListenerCommand extends Command
      * Недостатки:
      * - при деплое необходимо перезапускать демон
      * - система менее устойчива к ошибкам, если что-то поломалось в задаче, то демон может умереть
-     *
-     * @param InputInterface $input
-     * @param OutputInterface $output
      */
-    protected function runNormal(InputInterface $input, OutputInterface $output): void
+    protected function runNormal(): void
     {
+        $input = $this->getInput();
+        $output = $this->getOutput();
         $channel = $input->getArgument('channel');
         $totalEntity = $this->jobService->runAll($channel);
         if ($totalEntity->getAll()) {
@@ -129,10 +128,6 @@ class ListenerCommand extends Command
      *
      * Недостатки:
      * - отъедает чуть больше ресурсов, так как каждый раз вызывается консольное приложение
-     *
-     *
-     * @param InputInterface $input
-     * @param OutputInterface $output
      * @throws ShellException
      */
     protected function runWrapped(): void
