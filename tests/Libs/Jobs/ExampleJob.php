@@ -7,7 +7,7 @@ use ZnCore\Base\Exceptions\AlreadyExistsException;
 use ZnCore\Base\Libs\Container\Interfaces\ContainerAwareInterface;
 use ZnCore\Base\Libs\Container\Traits\ContainerAwareTrait;
 
-class ExampleJob implements JobInterface, ContainerAwareInterface
+class ExampleJob implements JobInterface//, ContainerAwareInterface
 {
 
     use ContainerAwareTrait;
