@@ -17,6 +17,7 @@ use ZnCore\Base\Libs\Container\Traits\ContainerAwareTrait;
 use ZnCore\Base\Libs\FileSystem\Helpers\FilePathHelper;
 use ZnLib\Console\Domain\Exceptions\ShellException;
 use ZnLib\Console\Domain\Helpers\CommandLineHelper;
+use ZnLib\Console\Domain\Libs\ZnShell;
 use ZnLib\Console\Symfony4\Traits\IOTrait;
 use ZnLib\Console\Symfony4\Traits\LockTrait;
 use ZnLib\Console\Symfony4\Traits\LoopTrait;
@@ -142,7 +143,15 @@ class ListenerCommand extends Command
         $input = $this->getInput();
         $output = $this->getOutput();
         $path = FilePathHelper::rootPath() . '/vendor/zncore/base/bin';
-        $commandString = CommandLineHelper::argsToString([
+
+        $shell = new ZnShell();
+        $process = $shell->createProcess([
+            'queue:run',
+            $channel,
+            "--wrapped" => 1,
+        ]);
+
+        /*$commandString = CommandLineHelper::argsToString([
             'php',
             'zn',
             'queue:run',
@@ -150,8 +159,8 @@ class ListenerCommand extends Command
             "--wrapped" => 1,
         ]);
 //        $commandString = "php zn queue:run $channel --wrapped=1";
+        $process = Process::fromShellCommandline($commandString);*/
 
-        $process = Process::fromShellCommandline($commandString);
         $tick = function ($type, $buffer) use ($output) {
             $output->write($buffer);
             $this->refreshLock();
