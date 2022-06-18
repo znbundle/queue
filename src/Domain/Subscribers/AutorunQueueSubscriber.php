@@ -8,7 +8,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
 use ZnCore\Base\Libs\Container\Helpers\ContainerHelper;
 use ZnLib\Console\Domain\Libs\ZnShell;
-use ZnSandbox\Sandbox\App\Enums\AppEventEnum;
+use ZnCore\Base\Libs\App\Enums\AppEventEnum;
 
 /**
  * Автозапуск CRON-задач при каждом запросе.
