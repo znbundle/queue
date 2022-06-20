@@ -11,6 +11,7 @@ use ZnBundle\Queue\Domain\Repositories\Eloquent\JobRepository;
 use ZnBundle\Queue\Domain\Services\JobService;
 use ZnBundle\Queue\Tests\Libs\Jobs\ExampleJob;
 use ZnCore\Base\Libs\Container\Helpers\ContainerHelper;
+use ZnCore\Base\Libs\Entity\Helpers\CollectionHelper;
 use ZnCore\Base\Libs\Entity\Helpers\EntityHelper;
 use ZnTool\Test\Base\BaseTest;
 use Psr\Container\ContainerInterface;
@@ -86,7 +87,7 @@ final class JobTest extends BaseTest
                 'delay' => 0,
                 'attempt' => 0,
             ],
-        ], EntityHelper::collectionToArray($jobCollection));
+        ], CollectionHelper::toArray($jobCollection));
 
         $totalEntity = $jobService->runAll(self::CHANNEL_SMS);
         $this->assertEquals(0, $totalEntity->getSuccess());
@@ -118,7 +119,7 @@ final class JobTest extends BaseTest
                 'delay' => 0,
                 'attempt' => 0,
             ],
-        ], EntityHelper::collectionToArray($jobCollection));
+        ], CollectionHelper::toArray($jobCollection));
 
         $totalEntity = $jobService->runAll(self::CHANNEL_SMS);
         $this->assertEquals(0, $totalEntity->getSuccess());
@@ -140,7 +141,7 @@ final class JobTest extends BaseTest
                 'delay' => 0,
                 'attempt' => 1,
             ],
-        ], EntityHelper::collectionToArray($jobCollection));
+        ], CollectionHelper::toArray($jobCollection));
     }
 
 }
