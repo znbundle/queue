@@ -15,7 +15,7 @@ use ZnBundle\Queue\Domain\Interfaces\Services\ScheduleServiceInterface;
 use ZnBundle\Queue\Domain\Queries\NewTaskQuery;
 use ZnCore\Base\Enums\StatusEnum;
 use ZnCore\Base\Libs\DotEnv\DotEnv;
-use ZnCore\Domain\Base\BaseService;
+use ZnCore\Base\Libs\Service\Base\BaseService;
 use ZnCore\Base\Libs\Entity\Helpers\EntityHelper;
 use ZnCore\Base\Libs\Validation\Helpers\ValidationHelper;
 use ZnCore\Base\Libs\EntityManager\Interfaces\EntityManagerInterface;
