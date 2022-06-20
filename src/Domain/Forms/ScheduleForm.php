@@ -2,14 +2,14 @@
 
 namespace ZnBundle\Queue\Domain\Forms;
 
-use ZnCore\Base\Libs\Entity\Interfaces\ValidateEntityByMetadataInterface;
+use ZnCore\Base\Libs\Validation\Interfaces\ValidationByMetadataInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use ZnCore\Domain\Constraints\Arr;
 use ZnCore\Base\Enums\StatusEnum;
 use ZnCore\Domain\Constraints\Enum;
 
-class ScheduleForm implements ValidateEntityByMetadataInterface
+class ScheduleForm implements ValidationByMetadataInterface
 {
 
     protected $channel = null;

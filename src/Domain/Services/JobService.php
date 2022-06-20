@@ -16,9 +16,9 @@ use ZnBundle\Queue\Domain\Queries\NewTaskQuery;
 use ZnCore\Base\Enums\StatusEnum;
 use ZnCore\Base\Libs\DotEnv\DotEnv;
 use ZnCore\Domain\Base\BaseService;
-use ZnCore\Domain\Helpers\EntityHelper;
-use ZnCore\Domain\Helpers\ValidationHelper;
-use ZnCore\Domain\Interfaces\Libs\EntityManagerInterface;
+use ZnCore\Base\Libs\Entity\Helpers\EntityHelper;
+use ZnCore\Base\Libs\Validation\Helpers\ValidationHelper;
+use ZnCore\Base\Libs\EntityManager\Interfaces\EntityManagerInterface;
 
 /**
  * @method JobEntity createEntity(array $attributes = [])

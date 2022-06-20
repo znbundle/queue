@@ -2,14 +2,14 @@
 
 namespace ZnBundle\Queue\Domain\Filters;
 
-use ZnCore\Base\Libs\Entity\Interfaces\ValidateEntityByMetadataInterface;
+use ZnCore\Base\Libs\Validation\Interfaces\ValidationByMetadataInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use ZnCore\Domain\Constraints\Arr;
 use ZnCore\Base\Enums\StatusEnum;
 use ZnCore\Domain\Constraints\Enum;
 
-class ScheduleFilter implements ValidateEntityByMetadataInterface
+class ScheduleFilter implements ValidationByMetadataInterface
 {
 
     protected $channel = null;
