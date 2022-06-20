@@ -4,13 +4,13 @@ namespace ZnBundle\Queue\Domain\Entities;
 
 use ZnCore\Contract\Domain\Interfaces\Entities\EntityIdInterface;
 use DateTime;
-use ZnCore\Domain\Interfaces\Entity\ValidateEntityByMetadataInterface;
+use ZnCore\Base\Libs\Entity\Interfaces\ValidateEntityByMetadataInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use ZnCore\Domain\Constraints\Arr;
 use ZnCore\Base\Enums\StatusEnum;
 use ZnCore\Domain\Constraints\Enum;
-use ZnCore\Domain\Interfaces\Entity\UniqueInterface;
+use ZnCore\Base\Libs\Entity\Interfaces\UniqueInterface;
 
 class ScheduleEntity implements EntityIdInterface, ValidateEntityByMetadataInterface, UniqueInterface
 {
