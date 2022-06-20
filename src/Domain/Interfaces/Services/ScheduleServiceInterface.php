@@ -7,7 +7,7 @@ use ZnBundle\Queue\Domain\Entities\JobEntity;
 use ZnBundle\Queue\Domain\Entities\ScheduleEntity;
 use ZnBundle\Queue\Domain\Entities\TotalEntity;
 use ZnCore\Domain\Interfaces\Service\CrudServiceInterface;
-use ZnCore\Domain\Libs\Query;
+use ZnCore\Base\Libs\Query\Entities\Query;
 
 interface ScheduleServiceInterface extends CrudServiceInterface
 {

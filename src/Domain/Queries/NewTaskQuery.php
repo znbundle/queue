@@ -2,7 +2,7 @@
 
 namespace ZnBundle\Queue\Domain\Queries;
 
-use ZnCore\Domain\Entities\Query\Where;
+use ZnCore\Base\Libs\Query\Entities\Where;
 use ZnCore\Base\Enums\StatusEnum;
 
 class NewTaskQuery extends TaskOrderQuery

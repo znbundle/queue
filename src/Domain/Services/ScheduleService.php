@@ -13,7 +13,7 @@ use ZnBundle\Queue\Domain\Interfaces\Services\ScheduleServiceInterface;
 use ZnCore\Domain\Base\BaseCrudService;
 use ZnCore\Domain\Behaviors\SoftDeleteBehavior;
 use ZnCore\Base\Libs\EntityManager\Interfaces\EntityManagerInterface;
-use ZnCore\Domain\Libs\Query;
+use ZnCore\Base\Libs\Query\Entities\Query;
 
 /**
  * @method ScheduleRepositoryInterface getRepository()
