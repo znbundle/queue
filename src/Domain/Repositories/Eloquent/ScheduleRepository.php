@@ -6,7 +6,7 @@ use Illuminate\Support\Collection;
 use ZnBundle\Queue\Domain\Entities\ScheduleEntity;
 use ZnBundle\Queue\Domain\Interfaces\Repositories\ScheduleRepositoryInterface;
 use ZnCore\Base\Libs\Query\Entities\Query;
-use ZnDatabase\Base\Domain\Mappers\TimeMapper;
+use ZnCore\Base\Libs\Repository\Mappers\TimeMapper;
 use ZnDatabase\Eloquent\Domain\Base\BaseEloquentCrudRepository;
 
 class ScheduleRepository extends BaseEloquentCrudRepository implements ScheduleRepositoryInterface

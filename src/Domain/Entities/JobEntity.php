@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 use ZnBundle\Queue\Domain\Enums\PriorityEnum;
 use ZnBundle\Queue\Domain\Helpers\JobHelper;
 use ZnBundle\Queue\Domain\Interfaces\JobInterface;
-use ZnCore\Contract\Domain\Interfaces\Entities\EntityIdInterface;
+use ZnCore\Base\Libs\Entity\Interfaces\EntityIdInterface;
 use ZnCore\Base\Libs\Entity\Interfaces\UniqueInterface;
 use ZnCore\Base\Libs\Validation\Interfaces\ValidationByMetadataInterface;
 use ZnCore\Base\Enums\StatusEnum;
