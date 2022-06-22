@@ -2,7 +2,7 @@
 
 namespace ZnBundle\Queue\Domain\Queries;
 
-use ZnCore\Base\Libs\Query\Entities\Query;
+use ZnCore\Domain\Query\Entities\Query;
 
 class TaskOrderQuery extends Query
 {

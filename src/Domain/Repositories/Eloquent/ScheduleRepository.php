@@ -5,8 +5,8 @@ namespace ZnBundle\Queue\Domain\Repositories\Eloquent;
 use Illuminate\Support\Collection;
 use ZnBundle\Queue\Domain\Entities\ScheduleEntity;
 use ZnBundle\Queue\Domain\Interfaces\Repositories\ScheduleRepositoryInterface;
-use ZnCore\Base\Libs\Query\Entities\Query;
-use ZnCore\Base\Libs\Repository\Mappers\TimeMapper;
+use ZnCore\Domain\Query\Entities\Query;
+use ZnCore\Domain\Repository\Mappers\TimeMapper;
 use ZnDatabase\Eloquent\Domain\Base\BaseEloquentCrudRepository;
 
 class ScheduleRepository extends BaseEloquentCrudRepository implements ScheduleRepositoryInterface

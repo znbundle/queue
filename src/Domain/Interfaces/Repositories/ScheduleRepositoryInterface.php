@@ -4,8 +4,8 @@ namespace ZnBundle\Queue\Domain\Interfaces\Repositories;
 
 use Illuminate\Support\Collection;
 use ZnBundle\Queue\Domain\Entities\ScheduleEntity;
-use ZnCore\Base\Libs\Repository\Interfaces\CrudRepositoryInterface;
-use ZnCore\Base\Libs\Query\Entities\Query;
+use ZnCore\Domain\Repository\Interfaces\CrudRepositoryInterface;
+use ZnCore\Domain\Query\Entities\Query;
 
 interface ScheduleRepositoryInterface extends CrudRepositoryInterface
 {
