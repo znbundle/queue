@@ -12,7 +12,7 @@ use Symfony\Component\Lock\LockFactory;
 use ZnBundle\Queue\Domain\Entities\TotalEntity;
 use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
 use ZnBundle\Queue\Symfony4\Widgets\TotalQueueWidget;
-use ZnCore\Base\Helpers\ClassHelper;
+use ZnCore\Base\Libs\Instance\Helpers\ClassHelper;
 use ZnLib\Console\Symfony4\Traits\IOTrait;
 use ZnLib\Console\Symfony4\Traits\LockTrait;
 use ZnLib\Console\Symfony4\Widgets\LogWidget;
