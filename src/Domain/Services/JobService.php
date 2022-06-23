@@ -13,11 +13,11 @@ use ZnBundle\Queue\Domain\Interfaces\Repositories\JobRepositoryInterface;
 use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
 use ZnBundle\Queue\Domain\Interfaces\Services\ScheduleServiceInterface;
 use ZnBundle\Queue\Domain\Queries\NewTaskQuery;
-use ZnCore\Base\Libs\Status\Enums\StatusEnum;
-use ZnCore\Base\Libs\DotEnv\Domain\Libs\DotEnv;
+use ZnCore\Base\Status\Enums\StatusEnum;
+use ZnCore\Base\DotEnv\Domain\Libs\DotEnv;
 use ZnCore\Domain\Service\Base\BaseService;
 use ZnCore\Domain\Entity\Helpers\EntityHelper;
-use ZnCore\Base\Libs\Validation\Helpers\ValidationHelper;
+use ZnCore\Base\Validation\Helpers\ValidationHelper;
 use ZnCore\Domain\EntityManager\Interfaces\EntityManagerInterface;
 
 /**

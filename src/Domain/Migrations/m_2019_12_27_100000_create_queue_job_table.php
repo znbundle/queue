@@ -3,7 +3,7 @@
 namespace Migrations;
 
 use Illuminate\Database\Schema\Blueprint;
-use ZnCore\Base\Libs\Status\Enums\StatusEnum;
+use ZnCore\Base\Status\Enums\StatusEnum;
 use ZnDatabase\Migration\Domain\Base\BaseCreateTableMigration;
 use ZnBundle\Queue\Domain\Enums\PriorityEnum;
 

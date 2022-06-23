@@ -2,7 +2,7 @@
 
 namespace ZnBundle\Queue\Domain\Enums\Rbac;
 
-use ZnCore\Base\Libs\Enum\Interfaces\GetLabelsInterface;
+use ZnCore\Base\Enum\Interfaces\GetLabelsInterface;
 use ZnCore\Contract\Rbac\Interfaces\GetRbacInheritanceInterface;
 
 class QueueSchedulePermissionEnum implements GetLabelsInterface, GetRbacInheritanceInterface

@@ -1,3 +1,3 @@
 <?php
 
-\ZnCore\Base\Libs\DotEnv\Domain\Libs\DotEnv::init();
+\ZnCore\Base\DotEnv\Domain\Libs\DotEnv::init();

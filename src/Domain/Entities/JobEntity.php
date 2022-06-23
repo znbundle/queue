@@ -9,8 +9,8 @@ use ZnBundle\Queue\Domain\Helpers\JobHelper;
 use ZnBundle\Queue\Domain\Interfaces\JobInterface;
 use ZnCore\Domain\Entity\Interfaces\EntityIdInterface;
 use ZnCore\Domain\Entity\Interfaces\UniqueInterface;
-use ZnCore\Base\Libs\Validation\Interfaces\ValidationByMetadataInterface;
-use ZnCore\Base\Libs\Status\Enums\StatusEnum;
+use ZnCore\Base\Validation\Interfaces\ValidationByMetadataInterface;
+use ZnCore\Base\Status\Enums\StatusEnum;
 
 class JobEntity implements ValidationByMetadataInterface, EntityIdInterface, UniqueInterface
 {

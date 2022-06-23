@@ -3,7 +3,7 @@
 namespace ZnBundle\Queue\Domain\Queries;
 
 use ZnCore\Domain\Query\Entities\Where;
-use ZnCore\Base\Libs\Status\Enums\StatusEnum;
+use ZnCore\Base\Status\Enums\StatusEnum;
 
 class NewTaskQuery extends TaskOrderQuery
 {
