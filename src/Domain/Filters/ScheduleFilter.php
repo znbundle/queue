@@ -6,7 +6,7 @@ use ZnCore\Base\Validation\Interfaces\ValidationByMetadataInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use ZnCore\Base\Arr\Constraints\Arr;
-use ZnCore\Base\Status\Enums\StatusEnum;
+use ZnLib\Components\Status\Enums\StatusEnum;
 use ZnCore\Base\Enum\Constraints\Enum;
 
 class ScheduleFilter implements ValidationByMetadataInterface

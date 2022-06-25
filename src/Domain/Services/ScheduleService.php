@@ -11,7 +11,7 @@ use ZnBundle\Queue\Domain\Entities\ScheduleEntity;
 use ZnBundle\Queue\Domain\Interfaces\Repositories\ScheduleRepositoryInterface;
 use ZnBundle\Queue\Domain\Interfaces\Services\ScheduleServiceInterface;
 use ZnCore\Domain\Service\Base\BaseCrudService;
-use ZnCore\Base\SoftDelete\Subscribers\SoftDeleteSubscriber;
+use ZnLib\Components\SoftDelete\Subscribers\SoftDeleteSubscriber;
 use ZnCore\Domain\EntityManager\Interfaces\EntityManagerInterface;
 use ZnCore\Domain\Query\Entities\Query;
 
