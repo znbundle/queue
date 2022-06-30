@@ -28,7 +28,7 @@ class ScheduleRepository extends BaseEloquentCrudRepository implements ScheduleR
         if($channel) {
             $query->where('channel', $channel);
         }
-        return $this->all($query);
+        return $this->findAll($query);
     }
 
     public function mappers(): array

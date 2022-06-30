@@ -21,6 +21,6 @@ class JobRepository extends BaseEloquentCrudRepository implements JobRepositoryI
     /*public function newTasks(string $channel = null): Collection
     {
         $query = new NewTaskQuery($channel);
-        return $this->all($query);
+        return $this->findAll($query);
     }*/
 }
