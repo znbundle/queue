@@ -81,7 +81,7 @@ class JobService extends BaseService implements JobServiceInterface
         $scheduleJobCollection = $this->scheduleService->runAll($channel);
 //        $this->persistCollection($scheduleJobCollection);
         $query = new NewTaskQuery($channel);
-        $jobCollection = $this->getRepository()->all($query);
+        $jobCollection = $this->getRepository()->findAll($query);
         return $jobCollection;
     }
 
@@ -96,7 +96,7 @@ class JobService extends BaseService implements JobServiceInterface
 
 //        $query = new NewTaskQuery($channel);
         /** @var Collection | JobEntity[] $jobCollection */
-//        $jobCollection = $this->getRepository()->all($query);
+//        $jobCollection = $this->getRepository()->findAll($query);
 
 
         $totalEntity = new TotalEntity;
