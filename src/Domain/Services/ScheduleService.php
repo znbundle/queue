@@ -4,7 +4,7 @@ namespace ZnBundle\Queue\Domain\Services;
 
 use Cron\CronExpression;
 use DateTime;
-use Illuminate\Support\Collection;
+use ZnCore\Domain\Collection\Libs\Collection;
 use Psr\Log\LoggerInterface;
 use ZnBundle\Queue\Domain\Entities\JobEntity;
 use ZnBundle\Queue\Domain\Entities\ScheduleEntity;

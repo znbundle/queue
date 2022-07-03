@@ -2,7 +2,7 @@
 
 namespace ZnBundle\Queue\Domain\Interfaces\Services;
 
-use Illuminate\Support\Collection;
+use ZnCore\Domain\Collection\Libs\Collection;
 use ZnBundle\Queue\Domain\Entities\JobEntity;
 use ZnBundle\Queue\Domain\Entities\ScheduleEntity;
 use ZnBundle\Queue\Domain\Entities\TotalEntity;

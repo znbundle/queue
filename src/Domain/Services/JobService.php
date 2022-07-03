@@ -2,7 +2,7 @@
 
 namespace ZnBundle\Queue\Domain\Services;
 
-use Illuminate\Support\Collection;
+use ZnCore\Domain\Collection\Libs\Collection;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use ZnBundle\Queue\Domain\Entities\JobEntity;

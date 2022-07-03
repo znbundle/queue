@@ -2,7 +2,7 @@
 
 namespace ZnBundle\Queue\Domain\Repositories\Eloquent;
 
-use Illuminate\Support\Collection;
+use ZnCore\Domain\Collection\Libs\Collection;
 use ZnBundle\Queue\Domain\Entities\JobEntity;
 use ZnBundle\Queue\Domain\Interfaces\Repositories\JobRepositoryInterface;
 use ZnBundle\Queue\Domain\Queries\NewTaskQuery;

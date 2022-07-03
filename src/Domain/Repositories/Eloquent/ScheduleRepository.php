@@ -2,7 +2,7 @@
 
 namespace ZnBundle\Queue\Domain\Repositories\Eloquent;
 
-use Illuminate\Support\Collection;
+use ZnCore\Domain\Collection\Libs\Collection;
 use ZnBundle\Queue\Domain\Entities\ScheduleEntity;
 use ZnBundle\Queue\Domain\Interfaces\Repositories\ScheduleRepositoryInterface;
 use ZnCore\Domain\Query\Entities\Query;
