@@ -2,7 +2,7 @@
 
 namespace ZnBundle\Queue\Tests\Unit;
 
-use Illuminate\Container\Container;
+use ZnCore\Base\Container\Libs\Container;
 use Illuminate\Database\Capsule\Manager;
 use ZnBundle\Queue\Domain\Enums\PriorityEnum;
 use ZnBundle\Queue\Domain\Interfaces\Repositories\JobRepositoryInterface;
