@@ -12,7 +12,7 @@ interface ScheduleRepositoryInterface extends CrudRepositoryInterface
 
     /**
      * @param Query|null $query
-     * @return Collection | ScheduleEntity[]
+     * @return \ZnCore\Domain\Collection\Interfaces\Enumerable | ScheduleEntity[]
      */
     public function allByChannel(string $channel = null, Query $query = null): Collection;
 }

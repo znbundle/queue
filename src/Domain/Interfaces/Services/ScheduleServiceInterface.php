@@ -14,13 +14,13 @@ interface ScheduleServiceInterface extends CrudServiceInterface
 
     /**
      * @param string|null $channel
-     * @return Collection | JobEntity[]
+     * @return \ZnCore\Domain\Collection\Interfaces\Enumerable | JobEntity[]
      */
     public function runAll(string $channel = null): Collection;
 
     /**
      * @param Query|null $query
-     * @return Collection | ScheduleEntity[]
+     * @return \ZnCore\Domain\Collection\Interfaces\Enumerable | ScheduleEntity[]
      */
     public function allByChannel(string $channel = null, Query $query = null): Collection;
 }

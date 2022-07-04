@@ -95,7 +95,7 @@ class JobService extends BaseService implements JobServiceInterface
         $jobCollection = $this->newTasks($channel);
 
 //        $query = new NewTaskQuery($channel);
-        /** @var Collection | JobEntity[] $jobCollection */
+        /** @var \ZnCore\Domain\Collection\Interfaces\Enumerable | JobEntity[] $jobCollection */
 //        $jobCollection = $this->getRepository()->findAll($query);
 
 
@@ -112,7 +112,7 @@ class JobService extends BaseService implements JobServiceInterface
     }
 
     /**
-     * @param Collection | JobEntity[] $collection
+     * @param \ZnCore\Domain\Collection\Interfaces\Enumerable | JobEntity[] $collection
      */
     private function persistCollection(Collection $collection): void
     {
