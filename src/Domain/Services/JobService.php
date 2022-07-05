@@ -113,9 +113,9 @@ class JobService extends BaseService implements JobServiceInterface
     }
 
     /**
-     * @param \ZnCore\Domain\Collection\Interfaces\Enumerable | JobEntity[] $collection
+     * @param Enumerable | JobEntity[] $collection
      */
-    private function persistCollection(Collection $collection): void
+    private function persistCollection(Enumerable $collection): void
     {
         if ($collection->isEmpty()) {
             return;
