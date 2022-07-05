@@ -2,6 +2,7 @@
 
 namespace ZnBundle\Queue\Domain\Repositories\Eloquent;
 
+use ZnCore\Domain\Collection\Interfaces\Enumerable;
 use ZnCore\Domain\Collection\Libs\Collection;
 use ZnBundle\Queue\Domain\Entities\ScheduleEntity;
 use ZnBundle\Queue\Domain\Interfaces\Repositories\ScheduleRepositoryInterface;
@@ -22,7 +23,7 @@ class ScheduleRepository extends BaseEloquentCrudRepository implements ScheduleR
         return ScheduleEntity::class;
     }
 
-    public function allByChannel(string $channel = null, Query $query = null): Collection
+    public function allByChannel(string $channel = null, Query $query = null): Enumerable
     {
         $query = $this->forgeQuery($query);
         if($channel) {

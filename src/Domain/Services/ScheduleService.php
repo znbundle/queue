@@ -4,6 +4,7 @@ namespace ZnBundle\Queue\Domain\Services;
 
 use Cron\CronExpression;
 use DateTime;
+use ZnCore\Domain\Collection\Interfaces\Enumerable;
 use ZnCore\Domain\Collection\Libs\Collection;
 use Psr\Log\LoggerInterface;
 use ZnBundle\Queue\Domain\Entities\JobEntity;
@@ -41,14 +42,14 @@ class ScheduleService extends BaseCrudService implements ScheduleServiceInterfac
         ];
     }
 
-    public function allByChannel(string $channel = null, Query $query = null): Collection
+    public function allByChannel(string $channel = null, Query $query = null): Enumerable
     {
         $query = $this->forgeQuery($query);
         $collection = $this->getRepository()->allByChannel($channel, $query);
         return $collection;
     }
 
-    public function runAll(string $channel = null): Collection
+    public function runAll(string $channel = null): Enumerable
     {
         $jobCollection = new Collection();
         /** @var ScheduleEntity[] $collection */

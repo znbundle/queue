@@ -2,6 +2,7 @@
 
 namespace ZnBundle\Queue\Domain\Interfaces\Repositories;
 
+use ZnCore\Domain\Collection\Interfaces\Enumerable;
 use ZnCore\Domain\Collection\Libs\Collection;
 use ZnBundle\Queue\Domain\Entities\ScheduleEntity;
 use ZnCore\Domain\Repository\Interfaces\CrudRepositoryInterface;
@@ -12,7 +13,7 @@ interface ScheduleRepositoryInterface extends CrudRepositoryInterface
 
     /**
      * @param Query|null $query
-     * @return \ZnCore\Domain\Collection\Interfaces\Enumerable | ScheduleEntity[]
+     * @return Enumerable | ScheduleEntity[]
      */
-    public function allByChannel(string $channel = null, Query $query = null): Collection;
+    public function allByChannel(string $channel = null, Query $query = null): Enumerable;
 }

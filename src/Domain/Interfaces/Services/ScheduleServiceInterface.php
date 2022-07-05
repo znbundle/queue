@@ -2,6 +2,7 @@
 
 namespace ZnBundle\Queue\Domain\Interfaces\Services;
 
+use ZnCore\Domain\Collection\Interfaces\Enumerable;
 use ZnCore\Domain\Collection\Libs\Collection;
 use ZnBundle\Queue\Domain\Entities\JobEntity;
 use ZnBundle\Queue\Domain\Entities\ScheduleEntity;
@@ -14,13 +15,13 @@ interface ScheduleServiceInterface extends CrudServiceInterface
 
     /**
      * @param string|null $channel
-     * @return \ZnCore\Domain\Collection\Interfaces\Enumerable | JobEntity[]
+     * @return Enumerable | JobEntity[]
      */
-    public function runAll(string $channel = null): Collection;
+    public function runAll(string $channel = null): Enumerable;
 
     /**
      * @param Query|null $query
-     * @return \ZnCore\Domain\Collection\Interfaces\Enumerable | ScheduleEntity[]
+     * @return Enumerable | ScheduleEntity[]
      */
-    public function allByChannel(string $channel = null, Query $query = null): Collection;
+    public function allByChannel(string $channel = null, Query $query = null): Enumerable;
 }

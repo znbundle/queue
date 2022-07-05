@@ -2,6 +2,7 @@
 
 namespace ZnBundle\Queue\Domain\Repositories\Eloquent;
 
+use ZnCore\Domain\Collection\Interfaces\Enumerable;
 use ZnCore\Domain\Collection\Libs\Collection;
 use ZnBundle\Queue\Domain\Entities\JobEntity;
 use ZnBundle\Queue\Domain\Interfaces\Repositories\JobRepositoryInterface;
@@ -18,7 +19,7 @@ class JobRepository extends BaseEloquentCrudRepository implements JobRepositoryI
         return JobEntity::class;
     }
 
-    /*public function newTasks(string $channel = null): Collection
+    /*public function newTasks(string $channel = null): Enumerable
     {
         $query = new NewTaskQuery($channel);
         return $this->findAll($query);

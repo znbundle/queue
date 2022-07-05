@@ -2,6 +2,7 @@
 
 namespace ZnBundle\Queue\Domain\Services;
 
+use ZnCore\Domain\Collection\Interfaces\Enumerable;
 use ZnCore\Domain\Collection\Libs\Collection;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -76,7 +77,7 @@ class JobService extends BaseService implements JobServiceInterface
         }
     }
 
-    public function newTasks(string $channel = null): Collection
+    public function newTasks(string $channel = null): Enumerable
     {
         $scheduleJobCollection = $this->scheduleService->runAll($channel);
 //        $this->persistCollection($scheduleJobCollection);
