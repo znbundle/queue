@@ -2,11 +2,8 @@
 
 namespace ZnBundle\Queue\Domain\Repositories\Eloquent;
 
-use ZnCore\Domain\Collection\Interfaces\Enumerable;
-use ZnCore\Domain\Collection\Libs\Collection;
 use ZnBundle\Queue\Domain\Entities\JobEntity;
 use ZnBundle\Queue\Domain\Interfaces\Repositories\JobRepositoryInterface;
-use ZnBundle\Queue\Domain\Queries\NewTaskQuery;
 use ZnDatabase\Eloquent\Domain\Base\BaseEloquentCrudRepository;
 
 class JobRepository extends BaseEloquentCrudRepository implements JobRepositoryInterface

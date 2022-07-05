@@ -2,8 +2,6 @@
 
 namespace ZnBundle\Queue\Domain\Services;
 
-use ZnCore\Domain\Collection\Interfaces\Enumerable;
-use ZnCore\Domain\Collection\Libs\Collection;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use ZnBundle\Queue\Domain\Entities\JobEntity;
@@ -14,12 +12,13 @@ use ZnBundle\Queue\Domain\Interfaces\Repositories\JobRepositoryInterface;
 use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
 use ZnBundle\Queue\Domain\Interfaces\Services\ScheduleServiceInterface;
 use ZnBundle\Queue\Domain\Queries\NewTaskQuery;
-use ZnLib\Components\Status\Enums\StatusEnum;
 use ZnCore\Base\DotEnv\Domain\Libs\DotEnv;
-use ZnCore\Domain\Service\Base\BaseService;
-use ZnCore\Domain\Entity\Helpers\EntityHelper;
 use ZnCore\Base\Validation\Helpers\ValidationHelper;
+use ZnCore\Domain\Collection\Interfaces\Enumerable;
+use ZnCore\Domain\Entity\Helpers\EntityHelper;
 use ZnCore\Domain\EntityManager\Interfaces\EntityManagerInterface;
+use ZnCore\Domain\Service\Base\BaseService;
+use ZnLib\Components\Status\Enums\StatusEnum;
 
 /**
  * @method JobEntity createEntity(array $attributes = [])
@@ -142,7 +141,7 @@ class JobService extends BaseService implements JobServiceInterface
             $isSuccess = true;
         } catch (\Throwable $e) {
             $logContext['error'] = EntityHelper::toArray($e, true);
-            if($jobEntity->getAttempt() >= 3) {
+            if ($jobEntity->getAttempt() >= 3) {
                 $jobEntity->setStatus(StatusEnum::BLOCKED);
             }
         }

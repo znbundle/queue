@@ -2,13 +2,11 @@
 
 namespace ZnBundle\Queue\Domain\Interfaces\Services;
 
-use ZnCore\Domain\Collection\Interfaces\Enumerable;
-use ZnCore\Domain\Collection\Libs\Collection;
 use ZnBundle\Queue\Domain\Entities\JobEntity;
 use ZnBundle\Queue\Domain\Entities\ScheduleEntity;
-use ZnBundle\Queue\Domain\Entities\TotalEntity;
-use ZnCore\Domain\Service\Interfaces\CrudServiceInterface;
+use ZnCore\Domain\Collection\Interfaces\Enumerable;
 use ZnCore\Domain\Query\Entities\Query;
+use ZnCore\Domain\Service\Interfaces\CrudServiceInterface;
 
 interface ScheduleServiceInterface extends CrudServiceInterface
 {

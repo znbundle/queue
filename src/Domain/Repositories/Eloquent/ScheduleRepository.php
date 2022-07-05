@@ -2,10 +2,9 @@
 
 namespace ZnBundle\Queue\Domain\Repositories\Eloquent;
 
-use ZnCore\Domain\Collection\Interfaces\Enumerable;
-use ZnCore\Domain\Collection\Libs\Collection;
 use ZnBundle\Queue\Domain\Entities\ScheduleEntity;
 use ZnBundle\Queue\Domain\Interfaces\Repositories\ScheduleRepositoryInterface;
+use ZnCore\Domain\Collection\Interfaces\Enumerable;
 use ZnCore\Domain\Query\Entities\Query;
 use ZnCore\Domain\Repository\Mappers\TimeMapper;
 use ZnDatabase\Eloquent\Domain\Base\BaseEloquentCrudRepository;
@@ -26,7 +25,7 @@ class ScheduleRepository extends BaseEloquentCrudRepository implements ScheduleR
     public function allByChannel(string $channel = null, Query $query = null): Enumerable
     {
         $query = $this->forgeQuery($query);
-        if($channel) {
+        if ($channel) {
             $query->where('channel', $channel);
         }
         return $this->findAll($query);

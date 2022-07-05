@@ -30,7 +30,7 @@ class TotalEntity
         $this->fail++;
         $this->failCollection->add($jobEntity);
     }
-    
+
     public function getAll(): int
     {
         return $this->getFail() + $this->getSuccess();
