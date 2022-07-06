@@ -4,7 +4,7 @@ namespace ZnBundle\Queue\Domain\Interfaces\Services;
 
 use ZnBundle\Queue\Domain\Entities\JobEntity;
 use ZnBundle\Queue\Domain\Entities\ScheduleEntity;
-use ZnCore\Domain\Collection\Interfaces\Enumerable;
+use ZnCore\Collection\Interfaces\Enumerable;
 use ZnCore\Domain\Query\Entities\Query;
 use ZnCore\Domain\Service\Interfaces\CrudServiceInterface;
 

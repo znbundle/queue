@@ -6,9 +6,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Process\Process;
 use Symfony\Contracts\EventDispatcher\Event;
 use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
-use ZnCore\Base\Container\Helpers\ContainerHelper;
+use ZnCore\Container\Helpers\ContainerHelper;
 use ZnLib\Console\Domain\Libs\ZnShell;
-use ZnCore\Base\App\Enums\AppEventEnum;
+use ZnCore\App\Enums\AppEventEnum;
 
 /**
  * Автозапуск CRON-задач при каждом запросе.

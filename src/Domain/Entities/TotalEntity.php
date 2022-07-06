@@ -2,7 +2,7 @@
 
 namespace ZnBundle\Queue\Domain\Entities;
 
-use ZnCore\Domain\Collection\Libs\Collection;
+use ZnCore\Collection\Libs\Collection;
 
 class TotalEntity
 {

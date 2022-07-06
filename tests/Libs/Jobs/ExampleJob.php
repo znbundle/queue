@@ -3,9 +3,9 @@
 namespace ZnBundle\Queue\Tests\Libs\Jobs;
 
 use ZnBundle\Queue\Domain\Interfaces\JobInterface;
-use ZnCore\Domain\Entity\Exceptions\AlreadyExistsException;
-use ZnCore\Base\Container\Interfaces\ContainerAwareInterface;
-use ZnCore\Base\Container\Traits\ContainerAwareTrait;
+use ZnCore\Entity\Exceptions\AlreadyExistsException;
+use ZnCore\Container\Interfaces\ContainerAwareInterface;
+use ZnCore\Container\Traits\ContainerAwareTrait;
 
 class ExampleJob implements JobInterface//, ContainerAwareInterface
 {

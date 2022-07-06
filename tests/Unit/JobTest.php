@@ -2,7 +2,7 @@
 
 namespace ZnBundle\Queue\Tests\Unit;
 
-use ZnCore\Base\Container\Libs\Container;
+use ZnCore\Container\Libs\Container;
 use Illuminate\Database\Capsule\Manager;
 use ZnBundle\Queue\Domain\Enums\PriorityEnum;
 use ZnBundle\Queue\Domain\Interfaces\Repositories\JobRepositoryInterface;
@@ -10,9 +10,9 @@ use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
 use ZnBundle\Queue\Domain\Repositories\Eloquent\JobRepository;
 use ZnBundle\Queue\Domain\Services\JobService;
 use ZnBundle\Queue\Tests\Libs\Jobs\ExampleJob;
-use ZnCore\Base\Container\Helpers\ContainerHelper;
-use ZnCore\Domain\Entity\Helpers\CollectionHelper;
-use ZnCore\Domain\Entity\Helpers\EntityHelper;
+use ZnCore\Container\Helpers\ContainerHelper;
+use ZnCore\Entity\Helpers\CollectionHelper;
+use ZnCore\Entity\Helpers\EntityHelper;
 use ZnTool\Test\Base\BaseTest;
 use Psr\Container\ContainerInterface;
 

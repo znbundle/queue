@@ -12,11 +12,11 @@ use ZnBundle\Queue\Domain\Interfaces\Repositories\JobRepositoryInterface;
 use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
 use ZnBundle\Queue\Domain\Interfaces\Services\ScheduleServiceInterface;
 use ZnBundle\Queue\Domain\Queries\NewTaskQuery;
-use ZnCore\Base\DotEnv\Domain\Libs\DotEnv;
-use ZnCore\Base\Validation\Helpers\ValidationHelper;
-use ZnCore\Domain\Collection\Interfaces\Enumerable;
-use ZnCore\Domain\Entity\Helpers\EntityHelper;
-use ZnCore\Domain\EntityManager\Interfaces\EntityManagerInterface;
+use ZnCore\DotEnv\Domain\Libs\DotEnv;
+use ZnCore\Validation\Helpers\ValidationHelper;
+use ZnCore\Collection\Interfaces\Enumerable;
+use ZnCore\Entity\Helpers\EntityHelper;
+use ZnCore\EntityManager\Interfaces\EntityManagerInterface;
 use ZnCore\Domain\Service\Base\BaseService;
 use ZnLib\Components\Status\Enums\StatusEnum;
 
@@ -95,7 +95,7 @@ class JobService extends BaseService implements JobServiceInterface
         $jobCollection = $this->newTasks($channel);
 
 //        $query = new NewTaskQuery($channel);
-        /** @var \ZnCore\Domain\Collection\Interfaces\Enumerable | JobEntity[] $jobCollection */
+        /** @var \ZnCore\Collection\Interfaces\Enumerable | JobEntity[] $jobCollection */
 //        $jobCollection = $this->getRepository()->findAll($query);
 
 

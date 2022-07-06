@@ -4,7 +4,7 @@ namespace ZnBundle\Queue\Domain\Repositories\Eloquent;
 
 use ZnBundle\Queue\Domain\Entities\ScheduleEntity;
 use ZnBundle\Queue\Domain\Interfaces\Repositories\ScheduleRepositoryInterface;
-use ZnCore\Domain\Collection\Interfaces\Enumerable;
+use ZnCore\Collection\Interfaces\Enumerable;
 use ZnCore\Domain\Query\Entities\Query;
 use ZnCore\Domain\Repository\Mappers\TimeMapper;
 use ZnDatabase\Eloquent\Domain\Base\BaseEloquentCrudRepository;
