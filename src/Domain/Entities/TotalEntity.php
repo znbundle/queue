@@ -15,8 +15,8 @@ class TotalEntity
 
     public function __construct()
     {
-        $this->successCollection = new Collection;
-        $this->failCollection = new Collection;
+        $this->successCollection = new Collection();
+        $this->failCollection = new Collection();
     }
 
     public function incrementSuccess(JobEntity $jobEntity)
