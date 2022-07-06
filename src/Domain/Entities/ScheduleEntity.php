@@ -7,9 +7,9 @@ use DateTime;
 use ZnCore\Validation\Interfaces\ValidationByMetadataInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
-use ZnCore\Base\Arr\Constraints\Arr;
+use ZnCore\Arr\Constraints\Arr;
 use ZnLib\Components\Status\Enums\StatusEnum;
-use ZnCore\Base\Enum\Constraints\Enum;
+use ZnCore\Enum\Constraints\Enum;
 use ZnCore\Entity\Interfaces\UniqueInterface;
 
 class ScheduleEntity implements EntityIdInterface, ValidationByMetadataInterface, UniqueInterface

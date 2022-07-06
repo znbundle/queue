@@ -17,7 +17,7 @@ use ZnCore\Validation\Helpers\ValidationHelper;
 use ZnCore\Collection\Interfaces\Enumerable;
 use ZnCore\Entity\Helpers\EntityHelper;
 use ZnCore\EntityManager\Interfaces\EntityManagerInterface;
-use ZnCore\Domain\Service\Base\BaseService;
+use ZnCore\Service\Base\BaseService;
 use ZnLib\Components\Status\Enums\StatusEnum;
 
 /**
