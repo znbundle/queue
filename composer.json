@@ -12,7 +12,9 @@
 	"require": {
 		"symfony/console": "4.*|5.*",
 		"symfony/lock": "4.*|5.*",
-		"dragonmantank/cron-expression": "v3.3.1"
+		"dragonmantank/cron-expression": "v3.3.1",
+		"znpack/core": "0.x-dev",
+		"znpack/domain": "0.x-dev"
 	},
 	"autoload": {
 		"psr-4": {
