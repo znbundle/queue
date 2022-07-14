@@ -14,7 +14,7 @@ use ZnCore\Collection\Libs\Collection;
 use ZnDomain\EntityManager\Interfaces\EntityManagerInterface;
 use ZnCore\Query\Entities\Query;
 use ZnDomain\Service\Base\BaseCrudService;
-use ZnLib\Components\SoftDelete\Subscribers\SoftDeleteSubscriber;
+use ZnDomain\Сomponents\SoftDelete\Subscribers\SoftDeleteSubscriber;
 
 /**
  * @method ScheduleRepositoryInterface getRepository()
