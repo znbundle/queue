@@ -5,9 +5,9 @@ namespace ZnBundle\Queue\Domain\Forms;
 use ZnDomain\Validator\Interfaces\ValidationByMetadataInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
-use ZnCore\Arr\Constraints\Arr;
+use ZnDomain\Сomponents\Constraints\Arr;
 use ZnLib\Components\Status\Enums\StatusEnum;
-use ZnDomain\Сomponents\EnumRepository\Constraints\Enum;
+use ZnDomain\Сomponents\Constraints\Enum;
 
 class ScheduleForm implements ValidationByMetadataInterface
 {
