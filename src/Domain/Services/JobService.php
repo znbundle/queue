@@ -12,12 +12,13 @@ use ZnBundle\Queue\Domain\Interfaces\Repositories\JobRepositoryInterface;
 use ZnBundle\Queue\Domain\Interfaces\Services\JobServiceInterface;
 use ZnBundle\Queue\Domain\Interfaces\Services\ScheduleServiceInterface;
 use ZnBundle\Queue\Domain\Queries\NewTaskQuery;
-use ZnCore\DotEnv\Domain\Libs\DotEnv;
-use ZnDomain\Validator\Helpers\ValidationHelper;
+use ZnCore\Code\Helpers\PropertyHelper;
 use ZnCore\Collection\Interfaces\Enumerable;
+use ZnCore\DotEnv\Domain\Libs\DotEnv;
 use ZnDomain\Entity\Helpers\EntityHelper;
 use ZnDomain\EntityManager\Interfaces\EntityManagerInterface;
 use ZnDomain\Service\Base\BaseService;
+use ZnDomain\Validator\Helpers\ValidationHelper;
 use ZnLib\Components\Status\Enums\StatusEnum;
 
 /**
@@ -163,7 +164,7 @@ class JobService extends BaseService implements JobServiceInterface
         $jobInstance = $container->get($jobClass);
         //$jobInstance = DiHelper::make($jobClass, $container);
         $data = $jobEntity->getJob();
-        EntityHelper::setAttributes($jobInstance, $data);
+        PropertyHelper::setAttributes($jobInstance, $data);
         return $jobInstance;
     }
 }
