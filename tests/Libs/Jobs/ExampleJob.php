@@ -3,7 +3,7 @@
 namespace ZnBundle\Queue\Tests\Libs\Jobs;
 
 use ZnBundle\Queue\Domain\Interfaces\JobInterface;
-use ZnCore\Entity\Exceptions\AlreadyExistsException;
+use ZnDomain\Entity\Exceptions\AlreadyExistsException;
 use ZnCore\Container\Interfaces\ContainerAwareInterface;
 use ZnCore\Container\Traits\ContainerAwareTrait;
 

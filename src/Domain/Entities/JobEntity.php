@@ -7,9 +7,9 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 use ZnBundle\Queue\Domain\Enums\PriorityEnum;
 use ZnBundle\Queue\Domain\Helpers\JobHelper;
 use ZnBundle\Queue\Domain\Interfaces\JobInterface;
-use ZnCore\Entity\Interfaces\EntityIdInterface;
-use ZnCore\Entity\Interfaces\UniqueInterface;
-use ZnCore\Validation\Interfaces\ValidationByMetadataInterface;
+use ZnDomain\Entity\Interfaces\EntityIdInterface;
+use ZnDomain\Entity\Interfaces\UniqueInterface;
+use ZnDomain\Validator\Interfaces\ValidationByMetadataInterface;
 use ZnLib\Components\Status\Enums\StatusEnum;
 
 class JobEntity implements ValidationByMetadataInterface, EntityIdInterface, UniqueInterface

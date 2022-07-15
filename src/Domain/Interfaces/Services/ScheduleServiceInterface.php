@@ -5,7 +5,7 @@ namespace ZnBundle\Queue\Domain\Interfaces\Services;
 use ZnBundle\Queue\Domain\Entities\JobEntity;
 use ZnBundle\Queue\Domain\Entities\ScheduleEntity;
 use ZnCore\Collection\Interfaces\Enumerable;
-use ZnCore\Query\Entities\Query;
+use ZnDomain\Query\Entities\Query;
 use ZnDomain\Service\Interfaces\CrudServiceInterface;
 
 interface ScheduleServiceInterface extends CrudServiceInterface

@@ -12,7 +12,7 @@ use ZnBundle\Queue\Domain\Interfaces\Services\ScheduleServiceInterface;
 use ZnCore\Collection\Interfaces\Enumerable;
 use ZnCore\Collection\Libs\Collection;
 use ZnDomain\EntityManager\Interfaces\EntityManagerInterface;
-use ZnCore\Query\Entities\Query;
+use ZnDomain\Query\Entities\Query;
 use ZnDomain\Service\Base\BaseCrudService;
 use ZnDomain\Сomponents\SoftDelete\Subscribers\SoftDeleteSubscriber;
 

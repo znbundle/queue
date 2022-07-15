@@ -3,7 +3,7 @@
 namespace ZnBundle\Queue\Domain\Interfaces\Repositories;
 
 use ZnBundle\Queue\Domain\Entities\JobEntity;
-use ZnCore\Query\Entities\Query;
+use ZnDomain\Query\Entities\Query;
 use ZnDomain\Repository\Interfaces\CrudRepositoryInterface;
 
 interface JobRepositoryInterface extends CrudRepositoryInterface

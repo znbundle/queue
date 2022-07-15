@@ -2,7 +2,7 @@
 
 namespace ZnBundle\Queue\Domain\Filters;
 
-use ZnCore\Validation\Interfaces\ValidationByMetadataInterface;
+use ZnDomain\Validator\Interfaces\ValidationByMetadataInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use ZnCore\Arr\Constraints\Arr;

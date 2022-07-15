@@ -11,8 +11,8 @@ use ZnBundle\Queue\Domain\Repositories\Eloquent\JobRepository;
 use ZnBundle\Queue\Domain\Services\JobService;
 use ZnBundle\Queue\Tests\Libs\Jobs\ExampleJob;
 use ZnCore\Container\Helpers\ContainerHelper;
-use ZnCore\Entity\Helpers\CollectionHelper;
-use ZnCore\Entity\Helpers\EntityHelper;
+use ZnDomain\Entity\Helpers\CollectionHelper;
+use ZnDomain\Entity\Helpers\EntityHelper;
 use ZnTool\Test\Base\BaseTest;
 use Psr\Container\ContainerInterface;
 
