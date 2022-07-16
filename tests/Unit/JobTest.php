@@ -2,6 +2,7 @@
 
 namespace ZnBundle\Queue\Tests\Unit;
 
+use ZnCore\Container\Interfaces\ContainerConfiguratorInterface;
 use ZnCore\Container\Libs\Container;
 use Illuminate\Database\Capsule\Manager;
 use ZnBundle\Queue\Domain\Enums\PriorityEnum;
@@ -36,7 +37,9 @@ final class JobTest extends BaseTest
     {
         $container = ContainerHelper::getContainer();
 
-        $containerConfigurator = ContainerHelper::getContainerConfiguratorByContainer($container);
+        /** @var ContainerConfiguratorInterface $containerConfigurator */
+        $containerConfigurator = $container->get(ContainerConfiguratorInterface::class);
+//        $containerConfigurator = ContainerHelper::getContainerConfiguratorByContainer($container);
         $containerConfigurator->bind(Manager::class, \ZnDatabase\Eloquent\Domain\Capsule\Manager::class, true);
         $containerConfigurator->bind(JobRepositoryInterface::class, JobRepository::class, true);
         $containerConfigurator->bind(JobServiceInterface::class, JobService::class, true);
