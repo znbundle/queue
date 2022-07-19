@@ -2,19 +2,29 @@
 
 namespace ZnBundle\Queue\Domain\Queries;
 
+use ZnDomain\Query\Entities\Query;
 use ZnDomain\Query\Entities\Where;
 use ZnLib\Components\Status\Enums\StatusEnum;
 
-class NewTaskQuery extends TaskOrderQuery
+class NewTaskQuery extends Query //TaskOrderQuery
 {
 
     public function __construct(string $channel = null)
     {
-        parent::__construct();
+        $this->limit(20);
+        $this->addOrder();
         $this->addStatusFilter();
         if ($channel) {
             $this->addChannelFilter($channel);
         }
+    }
+
+    private function addOrder()
+    {
+        $this->orderBy([
+            'priority' => SORT_DESC,
+            'pushed_at' => SORT_ASC,
+        ]);
     }
 
     private function addStatusFilter()

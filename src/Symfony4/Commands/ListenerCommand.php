@@ -113,11 +113,14 @@ class ListenerCommand extends Command
         $input = $this->getInput();
         $output = $this->getOutput();
         $channel = $input->getArgument('channel');
-        $totalEntity = $this->jobService->runAll($channel);
-        if ($totalEntity->getAll()) {
-            $totalWidget = new TotalQueueWidget($output);
-            $totalWidget->run($totalEntity);
-        }
+
+        do {
+            $totalEntity = $this->jobService->runAll($channel);
+            if ($totalEntity->getAll()) {
+                $totalWidget = new TotalQueueWidget($output);
+                $totalWidget->run($totalEntity);
+            }
+        } while($totalEntity->getAll());
     }
 
     /**

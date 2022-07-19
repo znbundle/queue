@@ -84,10 +84,12 @@ class RunCommand extends Command
             $output->writeln('');
         }
 
-        $totalEntity = $this->runQueues($channel);
-        if (!$wrapped || $totalEntity->getAll()) {
-            $this->showTotal($totalEntity);
-        }
+        do {
+            $totalEntity = $this->runQueues($channel);
+            if (!$wrapped || $totalEntity->getAll()) {
+                $this->showTotal($totalEntity);
+            }
+        } while($totalEntity->getAll());
     }
 
     protected function showTotal(TotalEntity $totalEntity)
@@ -102,7 +104,6 @@ class RunCommand extends Command
     {
         $output = $this->getOutput();
         $jobCollection = $this->jobService->newTasks($channel);
-
         $logWidget = new LogWidget($output);
         $logWidget->setPretty(true);
         $logWidget->setLineLength(64);

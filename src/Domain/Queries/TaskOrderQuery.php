@@ -2,7 +2,10 @@
 
 namespace ZnBundle\Queue\Domain\Queries;
 
+use ZnCore\Code\Helpers\DeprecateHelper;
 use ZnDomain\Query\Entities\Query;
+
+DeprecateHelper::hardThrow();
 
 class TaskOrderQuery extends Query
 {
@@ -14,5 +17,4 @@ class TaskOrderQuery extends Query
             'pushed_at' => SORT_ASC,
         ]);
     }
-
 }
